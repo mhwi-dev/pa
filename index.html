@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Quicksand:wght@400;500;600&display=swap" rel="stylesheet">
+    <title>Letter</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        .font-dancing {
+            font-family: 'Dancing Script', cursive;
+        }
+        .font-quicksand {
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #fff9fb;
+            overflow-x: hidden;
+        }
+
+        .dancing-font {
+            font-family: 'Dancing Script', cursive;
+        }
+
+        .heart {
+            animation: heartbeat 1.5s infinite;
+        }
+
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            25% { transform: scale(1.1); }
+            50% { transform: scale(1); }
+            75% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .envelope {
+            transition: all 0.5s ease;
+            transform-style: preserve-3d;
+        }
+
+        .envelope.open {
+            transform: rotateX(180deg);
+        }
+
+        .letter {
+            transform: translateY(100%);
+            transition: all 0.8s ease;
+            opacity: 0;
+        }
+
+        .letter.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .music-control {
+            transition: all 0.3s ease;
+        }
+
+        .music-control:hover {
+            transform: scale(1.1);
+        }
+
+        /* Animation for typing text */
+        .typing-container {
+            overflow: visible;
+            white-space: normal;
+            border-right: none;
+            width: auto;
+        }
+
+        .arrow-down {
+            font-size: 45px;
+            color: #ec4899;
+            margin-bottom: 0px;
+            animation: arrowBounce 1.2s infinite;
+        }
+
+        @keyframes arrowBounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(8px);
+            }
+        }
+
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: #f472b6 }
+        }
+
+        .fade-in {
+            animation: fadeIn 1.5s ease-in forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0 }
+            to { opacity: 1 }
+        }
+
+        @keyframes float {
+            0%, 100% {
+            transform: translateY(0) rotate(0deg);
+            }
+            50% {
+            transform: translateY(-15px) rotate(3deg);
+            }
+        }
+
+        .loopy-float {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        /* Overlay styles */
+        .overlay {
+            position: fixed;
+            inset: 0;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            background: transparent;
+
+            z-index: 100;
+
+            transition: opacity 0.6s ease;
+        }
+
+        .overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        /* =================================
+        LÁ THƯ MỞ ĐẦU
+        ================================= */
+
+        .intro-letter {
+            position: relative;
+
+            width: min(520px, 88vw);
+            min-height: 430px;
+
+            padding: 55px 40px;
+
+            background: linear-gradient(
+                145deg,
+                #fffdfb,
+                #fff7f8
+            );
+
+            border-radius: 8px;
+
+            box-shadow:
+                0 30px 60px rgba(80, 20, 40, 0.22),
+                0 8px 20px rgba(80, 20, 40, 0.12);
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            overflow: visible;
+        }
+
+
+        /* ánh sáng trên mặt giấy */
+
+        .intro-letter::before {
+            content: "";
+
+            position: absolute;
+
+            inset: 0;
+
+            background: linear-gradient(
+                120deg,
+                rgba(255,255,255,0.7),
+                transparent 40%,
+                rgba(255,220,230,0.18)
+            );
+
+            pointer-events: none;
+        }
+
+
+        /* viền giấy */
+
+        .intro-letter::after {
+            content: "";
+
+            position: absolute;
+
+            inset: 12px;
+
+            border: 1px solid #f5d5df;
+
+            border-radius: 5px;
+
+            pointer-events: none;
+        }
+
+        /* highlight ribbon */
+
+        .intro-ribbon::before {
+            content: "";
+
+            position: absolute;
+
+            left: 13px;
+            top: 0;
+
+            width: 7px;
+            height: 100%;
+
+            background: rgba(255,255,255,0.35);
+
+            filter: blur(2px);
+        }
+
+
+        /* =================================
+        NỘI DUNG
+        ================================= */
+
+        .intro-content {
+            position: relative;
+
+            z-index: 5;
+
+            text-align: center;
+
+            padding: 20px;
+
+            background: rgba(255,255,255,0.72);
+
+            border-radius: 10px;
+        }
+
+        /* Nơ ở góc lá thư */
+        .corner-bow {
+            position: absolute;
+            top: -18px;
+            right: -15px;
+            width: 70px;
+            height: 45px;
+            z-index: 999;
+            transform: rotate(8deg);
+        }
+
+        /* Hai cánh nơ */
+        .bow-left,
+        .bow-right {
+            position: absolute;
+            top: 8px;
+            width: 32px;
+            height: 25px;
+            background: linear-gradient(135deg, #ff4f9a, #d92870);
+            box-shadow: 2px 4px 7px rgba(120, 30, 60, 0.25);
+        }
+
+        /* Cánh trái */
+        .bow-left {
+            left: 2px;
+            border-radius: 50% 15% 50% 50%;
+            transform: rotate(-25deg);
+        }
+
+        /* Cánh phải */
+        .bow-right {
+            right: 2px;
+            border-radius: 15% 50% 50% 50%;
+            transform: rotate(25deg);
+        }
+
+        /* Nút giữa */
+        .bow-knot {
+            position: absolute;
+            top: 12px;
+            left: 27px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 30%, #ff8fbd, #e52e76);
+            box-shadow: 2px 3px 5px rgba(120, 30, 60, 0.3);
+        }
+
+        .start-btn {
+            background-color: #fb4ca4;
+            color: white;
+            font-size: 1.5rem;
+            padding: 1rem 2rem;
+            border-radius: 9999px;
+            margin-top: 2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        
+        .start-btn:hover {
+            transform: scale(1.05);
+            background-color: #db2777;
+        }
+
+        .firework {
+            position: fixed;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 50;
+        }
+
+        .firework-particle {
+            position: fixed;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 50;
+            animation: firework-explode 1.5s ease-out forwards;
+        }
+
+        @keyframes firework-explode {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(var(--x), var(--y)) scale(0);
+                opacity: 0;
+            }
+        }
+
+        /* =========================
+        CHUYỂN CẢNH TÂM TƯ → CÂU HỎI
+        ========================= */
+
+        #typingSection,
+        #quizSection {
+            will-change: transform, opacity;
+        }
+
+        /* Tâm tư kéo sang trái */
+        .heartfelt-exit {
+            animation: heartfeltExit 1.3s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+        }
+
+        @keyframes heartfeltExit {
+            0% {
+                opacity: 1;
+                transform: translateX(0) scale(1);
+            }
+
+            45% {
+                opacity: 0.85;
+                transform: translateX(-45px) scale(0.98);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateX(-110px) scale(0.94);
+            }
+        }
+
+        /* Câu hỏi đi từ bên phải vào */
+        .question-enter {
+            animation: questionEnter 1.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        @keyframes questionEnter {
+            0% {
+                opacity: 0;
+                transform: translateX(110px) scale(0.94);
+            }
+
+            55% {
+                opacity: 0.9;
+                transform: translateX(-8px) scale(1.01);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateX(0) scale(1);
+            }
+        }
+
+        .tada-effect {
+            animation: tada 1s ease-in-out;
+        }
+
+        @keyframes tada {
+            0% {
+                transform: scale(1);
+            }
+
+            10%, 20% {
+                transform: scale(0.9) rotate(-3deg);
+            }
+
+            30%, 50%, 70%, 90% {
+                transform: scale(1.1) rotate(3deg);
+            }
+
+            40%, 60%, 80% {
+                transform: scale(1.1) rotate(-3deg);
+            }
+
+            100% {
+                transform: scale(1) rotate(0);
+            }
+        }
+
+        #appLoader {
+            position: fixed;
+            inset: 0;
+            background: #fff5f8;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 99999;
+            transition: opacity 0.5s ease;
+        }
+
+        .cute-loader {
+            width: 80px;
+            height: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .cute-loader img {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            animation: pulse 0.8s infinite alternate ease-in-out;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(0.8);
+                opacity: 0.6;
+            }
+
+            100% {
+                transform: scale(1.1);
+                opacity: 1;
+            }
+        }
+
+        /* LOADING APP */
+        #appLoader {
+            position: fixed;
+            inset: 0;
+            background: #fff5f8;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 99999;
+            opacity: 1;
+            transition: opacity 0.8s ease;
+        }
+
+        #appLoader p {
+            margin-top: 15px;
+            color: #ec4899;
+            font-size: 14px;
+        }
+
+        .loading-bar {
+            width: 220px;
+            height: 8px;
+            background: #fce7f3;
+            border-radius: 999px;
+            overflow: hidden;
+            margin-top: 18px;
+        }
+
+        #loadingProgress {
+            width: 0%;
+            height: 100%;
+            background: #ec4899;
+            border-radius: 999px;
+            transition: width 0.1s linear;
+        }
+
+        #loadingPercent {
+            margin-top: 8px;
+            color: #ec4899;
+            font-size: 13px;
+            font-weight: bold;
+        }
+        /* =========================
+        LOADING DONE EFFECT
+        ========================= */
+
+        #doneMessage {
+            display: none;
+            text-align: center;
+            animation: doneAppear 0.8s ease forwards;
+        }
+
+        .done-icon {
+            width: 65px;
+            height: 65px;
+            margin: 0 auto 15px;
+
+            border-radius: 50%;
+            background: #ff6fa5;
+            color: white;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 38px;
+            font-weight: bold;
+
+            box-shadow:
+                0 0 15px rgba(255, 105, 160, 0.7),
+                0 0 35px rgba(255, 105, 160, 0.4);
+
+            animation: checkPop 0.7s cubic-bezier(.17,.67,.35,1.5);
+        }
+
+        .done-title {
+            font-size: 22px;
+            font-weight: bold;
+            color: #ff6fa5;
+            margin-bottom: 5px;
+        }
+
+        .done-subtitle {
+            font-size: 14px;
+            color: #777;
+        }
+
+        @keyframes doneAppear {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes checkPop {
+            0% {
+                transform: scale(0);
+            }
+
+            70% {
+                transform: scale(1.15);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* Ảnh khi hoàn tất */
+        .loader-complete-image {
+            animation: imageComplete 1s ease forwards;
+        }
+
+        @keyframes imageComplete {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.12);
+                box-shadow: 0 0 30px rgba(255, 105, 160, 0.8);
+            }
+
+            100% {
+                transform: scale(1.05);
+            }
+        }
+
+        /* Thanh loading hoàn tất */
+        .loading-complete {
+            animation: barGlow 1s ease infinite alternate;
+        }
+
+        @keyframes barGlow {
+            from {
+                box-shadow: 0 0 5px rgba(255, 105, 160, 0.5);
+            }
+
+            to {
+                box-shadow:
+                    0 0 15px rgba(255, 105, 160, 0.9),
+                    0 0 30px rgba(255, 105, 160, 0.5);
+            }
+        }
+
+        #loadingText {
+            width: 100%;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .loading-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin: 0 0 8px;
+            text-align: center;
+        }
+
+        .loading-subtitle {
+            font-size: 14px;
+            color: #777;
+            margin: 0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4">
+    <div id="appLoader">
+        <div class="cute-loader">
+            <img id="loaderImage" src="pic1.jpg" alt="Loading">
+        </div>
+
+    <div id="loadingText">
+        <p class="loading-title">Đợi xíu nhé!</p>
+        <p class="loading-subtitle">
+            Mhuy đang chuẩn bị cho điều đặc biệt...
+        </p>
+    </div>
+
+        <div id="doneMessage">
+            <div class="done-icon">✓</div>
+            <p class="done-title">Xin lỗi đã để nàng chờ lâu!</p>
+            <p class="done-subtitle">Goooooooo...</p>
+        </div>
+
+        <div class="loading-bar">
+            <div id="loadingProgress"></div>
+        </div>
+
+        <div id="loadingPercent">0%</div>
+    </div>
+
+    <!-- Overlay màn hình bắt đầu -->
+    <!-- Lá thư mở đầu -->
+    <div id="overlay" class="overlay">
+
+        <div class="intro-letter">
+
+            <div class="corner-bow">
+                <span class="bow-left"></span>
+                <span class="bow-right"></span>
+                <span class="bow-knot"></span>
+            </div>
+
+            <!-- Nội dung -->
+            <div class="intro-content">
+
+                <h1 class="dancing-font text-4xl md:text-5xl font-bold text-pink-500 mb-4">
+                    Hế Lô Camay!!
+                </h1>
+
+                <p class="text-lg text-gray-600 mb-2">
+                    Nhấn vào ô bên dưới này nè
+                </p>
+
+                <p class="text-pink-400 text-sm italic">
+                    Mhuy có điều muốn nói... 👀
+                </p>
+
+                <div class="arrow-down">
+                    ↓
+                </div>
+
+                <button id="startBtn" class="start-btn">
+                    Bắt đầu ❤️
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Nhạc nền -->
+    <audio id="bgMusic" loop>
+        <source src="boo.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Nút điều khiển nhạc -->
+    <div class="fixed top-4 right-4 z-50">
+        <button id="musicToggle" class="music-control bg-pink-100 hover:bg-pink-200 text-pink-700 rounded-full p-3 shadow-lg hidden">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
+            </svg>
+        </button>
+    </div>
+
+    <!-- Phần chính (ban đầu ẩn) -->
+    <div id="mainContent" class="max-w-2xl w-full text-center hidden">
+        <!-- Tiêu đề -->
+        <h1 class="dancing-font text-5xl md:text-6xl font-bold text-pink-500 mb-8">Hế Lô Camay!!</h1>
+
+        <!-- Phần tâm tư -->
+        <div id="typingSection" class="bg-white rounded-xl shadow-lg p-8 mb-8">
+            <div class="heart inline-block text-pink-500 text-4xl mb-6">❤️</div>
+            <p id="typingText" class="typing-container text-lg md:text-xl text-pink-600 font-quicksand">
+                Hong biết em có bất ngờ khi anh làm giống như vậy kh he  😁. Hè mà cứ ở nhà miết thôi 😑, biết khi anh làm cái này là em hết cơ hội được ở nhà rồi đó 🤗, với lại cũng là lúc để mình gặp nhau nà, cũng cóa 1 chút hồi hộp đồ đó nhma có cái tiền đề là trong dis nói nhiều như mấy bà tám vậy nên chắc sẽ đỡ hơn đóa kakakaka. 
+                <span class="font-dancing text-3xl text-pink-500 italic leading-relaxed">Thế nên là...</span>
+            </p>
+        </div>
+
+        <!-- Câu h hỏi -->
+        <div id="quizSection" class="hidden bg-white rounded-xl shadow-lg p-8 mb-8 transform transition-all duration-500">
+            <div class="heart inline-block text-pink-500 text-4xl mb-6">❤️</div>
+            <h2 class="dancing-font text-3xl md:text-4xl text-pink-600 mb-6">Xin phép cho Huy được dẫn Camay đi vòng sài gòn nhá</h2>
+            <div class="flex justify-center space-x-4">
+                <button id="yesBtn" class="bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 px-6 rounded-full transition-all duration-300 transform hover:scale-105">
+                    Dạ  ❤️
+                </button>
+                <button id="noBtn" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-3 px-6 rounded-full transition-all duration-300 transform hover:scale-105">
+                    Mơ đi cưng 🤌🏻🧚‍♀️
+                </button>
+            </div>
+        </div>
+
+        <!-- Thông báo khi chọn không -->
+        <div id="noMessage" class="hidden bg-white rounded-xl shadow-lg p-8 mb-8">
+
+            <div class="inline-block text-4xl mb-6">
+                <img id="memeImage"
+                    src="meme.webp"
+                    alt="Heart"
+                    class="w-16 h-16 object-contain">
+            </div>
+
+            <p id="noTypingText" class="typing-container text-lg md:text-xl text-pink-600 font-quicksand">
+                Huy biết thế nào PAnh cũng tò mò bấm vào đây mà, nên Huy đã rào trước roi hehe 😘
+            </p>
+
+            <button id="continueBtn" class="hidden mt-4 bg-pink-500 hover:bg-pink-600 text-white font-bold py-2 px-4 rounded-full transition-all duration-300">
+                Quà cho đỡ quê nò hihi ❤️
+            </button>
+
+        </div>
+
+        <!-- Phong bì thư -->
+        <div id="envelope" class="hidden envelope relative w-64 h-40 mx-auto mb-8 cursor-pointer">
+            <div class="absolute inset-0 bg-pink-400 rounded-lg shadow-lg"></div>
+            <div class="absolute top-0 left-0 right-0 h-20 bg-pink-300 rounded-t-lg"></div>
+            <div class="absolute top-16 left-0 right-0 border-t-32 border-t-pink-300 border-l-32 border-l-transparent border-r-32 border-r-transparent"></div>
+            <div class="absolute inset-2 bg-pink-100 rounded-sm flex items-center justify-center">
+                <span class="dancing-font text-xl text-pink-600">Lịch trình buổi hôm đó  ❤️</span>
+            </div>
+        </div>
+
+        <!-- Lá thư -->
+        <div id="letter" class="letter bg-white rounded-lg shadow-xl p-8 max-w-2xl mx-auto hidden">
+            <div class="border-2 border-pink-200 rounded p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="dancing-font text-3xl text-pink-600">Lịch trình hẹn hò</h2>
+                    <div class="heart text-pink-500 text-2xl">💌</div>
+                </div>
+
+                <div class="text-left space-y-6">
+                    <div class="flex items-start">
+                        <div class="bg-pink-100 text-pink-700 rounded-full w-10 h-10 flex items-center justify-center mr-4 flex-shrink-0">8h</div>
+                        <div>
+                            <h3 class="font-bold text-pink-700">Đón em</h3>
+                            <p class="text-gray-600">Anh sẽ đón Boo tại nhà của em nhá!</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start">
+                        <div class="bg-pink-100 text-pink-700 rounded-full w-10 h-10 flex items-center justify-center mr-4 flex-shrink-0">9h</div>
+                        <div>
+                            <h3 class="font-bold text-pink-700">Ăn Sáng </h3>
+                            <p class="text-gray-600">Ăn sáng cùng nhau tại 100gr Beefsteak</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start">
+                        <div class="bg-pink-100 text-pink-700 rounded-full w-10 h-10 flex items-center justify-center mr-4 flex-shrink-0">10h</div>
+                        <div>
+                            <h3 class="font-bold text-pink-700">Tham quan sở thú</h3>
+                            <p class="text-gray-600">Thảo cầm viên sài gòn, nơi chục năm rồi 2 mình chưa đi :D</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start">
+                        <div class="bg-pink-100 text-pink-700 rounded-full w-10 h-10 flex items-center justify-center mr-4 flex-shrink-0">14h</div>
+                        <div>
+                            <h3 class="font-bold text-pink-700">Xem phim</h3>
+                            <p class="text-gray-600">Phim kinh dị Út Lan tại CGV Aeon Tân Phú</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start">
+                        <div class="bg-pink-100 text-pink-700 rounded-full w-10 h-10 flex items-center justify-center mr-4 flex-shrink-0">17h</div>
+                        <div>
+                            <h3 class="font-bold text-pink-700">Khu trò chơi Aeon</h3>
+                            <p class="text-gray-600">Trở về tuổi thơ với các trò con nít nhể, quậy banh xác luôn </p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start">
+                        <div class="bg-pink-100 text-pink-700 rounded-full w-10 h-10 flex items-center justify-center mr-4 flex-shrink-0">19h</div>
+                        <div>
+                            <h3 class="font-bold text-pink-700">Ăn tối</h3>
+                            <p class="text-gray-600">Tất cả các món trừ ghẹ và cá nhóe heheheeh</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start">
+                        <div class="bg-pink-100 text-pink-700 rounded-full w-10 h-10 flex items-center justify-center mr-4 flex-shrink-0">22h</div>
+                        <div>
+                            <h3 class="font-bold text-pink-700">Đi dạo/Về nhà</h3>
+                            <p class="text-gray-600">Đi dạo ngắm sài gòn cùng anh nhá và cuối cùng là Anh sẽ đưa em về tận nhà an toàn</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8 pt-4 border-t border-pink-200">
+                    <p class="dancing-font text-2xl text-pink-600">Hẹn gặp em vào thứ 4 tuần này nhé!</p>
+                    <p class="text-gray-600 mt-2">Anh sẽ chuẩn bị thật nhiều điều bất ngờ cho em đó 😜❤️</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loopy và trang trí -->
+        <img src="https://i.pinimg.com/736x/a9/5a/25/a95a251fb2b24b7247ac07d1a7798030.jpg"
+             class="hidden md:block fixed -left-20 bottom-0 w-40 opacity-50 loopy-float">
+
+        <img src="https://i.pinimg.com/736x/e3/f3/92/e3f3920b527a4bee5a08614c5d8f3d0f.jpg"
+             class="hidden md:block fixed -right-20 top-1/3 w-40 opacity-50 loopy-float">
+
+        <img src="https://i.pinimg.com/736x/86/c5/04/86c5043ddd2d0b72d916853f37d94eb1.jpg"
+             class="hidden md:block fixed left-1/4 top-10 w-28 opacity-30 loopy-float">
+
+        <img src="https://i.pinimg.com/736x/16/a1/bf/16a1bfdaee8c365614d5f108e3890c2a.jpg"
+             class="hidden md:block fixed right-1/4 bottom-20 w-28 opacity-30 loopy-float">
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Các biến cần thiết
+            const overlay = document.getElementById('overlay');
+            const startBtn = document.getElementById('startBtn');
+            const mainContent = document.getElementById('mainContent');
+            const musicToggle = document.getElementById('musicToggle');
+            const music = document.getElementById('bgMusic');
+            let isMusicPlaying = false;
+            
+            // Xử lý sự kiện khi nhấn nút bắt đầu
+            startBtn.addEventListener('click', function() {
+                // Ẩn overlay
+                overlay.classList.add('hidden');
+                
+                // Hiện nội dung chính
+                mainContent.classList.remove('hidden');
+                mainContent.classList.add('fade-in');
+                
+                // Hiện nút điều khiển nhạc
+                musicToggle.classList.remove('hidden');
+                
+                // Phát nhạc
+                music.volume = 0.3;
+                const playPromise = music.play();
+                
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        isMusicPlaying = true;
+                    }).catch(error => {
+                        isMusicPlaying = false;
+                        updateMusicButton();
+                    });
+                }
+                
+                // Bắt đầu hiệu ứng gõ chữ
+                startTypingEffect();
+            });
+            
+            // Cập nhật trạng thái nút nhạc
+            function updateMusicButton() {
+                if (isMusicPlaying) {
+                    musicToggle.innerHTML = `
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
+                        </svg>
+                    `;
+                } else {
+                    musicToggle.innerHTML = `
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" clip-rule="evenodd" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
+                        </svg>
+                    `;
+                }
+            }
+            
+            // Toggle nhạc
+            musicToggle.addEventListener('click', function() {
+                if (isMusicPlaying) {
+                    music.pause();
+                } else {
+                    music.play();
+                }
+                isMusicPlaying = !isMusicPlaying;
+                updateMusicButton();
+            });
+            
+            // Hiệu ứng gõ chữ
+            // Hiệu ứng gõ chữ
+            function startTypingEffect() {
+                const typingSection = document.getElementById('typingSection');
+                const quizSection = document.getElementById('quizSection');
+                const typingText = document.getElementById('typingText');
+
+                const fullText = typingText.textContent.trim();
+
+                typingText.textContent = '';
+
+                let i = 0;
+                const speed = 70;
+
+                function typeWriter() {
+                    if (i < fullText.length) {
+
+                        typingText.textContent += fullText.charAt(i);
+                        i++;
+
+                        setTimeout(typeWriter, speed);
+
+                    } else {
+
+                        // Đợi một chút sau khi gõ xong
+                        setTimeout(() => {
+
+                            // Tâm tư bắt đầu kéo sang trái
+                            typingSection.classList.add('heartfelt-exit');
+
+                            // Sau 450ms, câu hỏi bắt đầu xuất hiện
+                            setTimeout(() => {
+
+                                typingSection.classList.add('hidden');
+                                typingSection.classList.remove('heartfelt-exit');
+
+                                quizSection.classList.remove('hidden');
+                                quizSection.classList.add('question-enter');
+
+                            }, 650);
+
+                        }, 1000);
+                    }
+                }
+
+                typeWriter();
+            }
+                    
+            // Xử lý câu h hỏi
+            const yesBtn = document.getElementById('yesBtn');
+            const noBtn = document.getElementById('noBtn');
+            const noMessage = document.getElementById('noMessage');
+            const continueBtn = document.getElementById('continueBtn');
+            const envelope = document.getElementById('envelope');
+            const letter = document.getElementById('letter');
+            const memeImage = document.getElementById('memeImage');
+
+            yesBtn.addEventListener('click', function() {
+                quizSection.classList.add('hidden');
+                envelope.classList.remove('hidden');
+                envelope.classList.add('fade-in');
+            });
+
+            noBtn.addEventListener('click', function() {
+                quizSection.classList.add('hidden');
+
+                noMessage.classList.remove('hidden');
+                noMessage.classList.add('fade-in');
+
+                memeImage.classList.add('tada-effect');
+
+                startNoMessageTyping();
+            });
+
+            function startNoMessageTyping() {
+                const noTypingText = document.getElementById('noTypingText');
+                const continueBtn = document.getElementById('continueBtn');
+
+                const fullText = noTypingText.textContent.trim();
+
+                noTypingText.textContent = '';
+
+                let i = 0;
+                const speed = 70;
+
+                function typeWriter() {
+                    if (i < fullText.length) {
+                        noTypingText.textContent += fullText.charAt(i);
+                        i++;
+
+                        setTimeout(typeWriter, speed);
+                    } else {
+                        setTimeout(() => {
+
+                            continueBtn.classList.remove('hidden');
+                            continueBtn.classList.add('fade-in');
+                        }, 1000);
+                    }
+                }
+
+                typeWriter();
+            }
+
+            continueBtn.addEventListener('click', function() {
+                noMessage.classList.add('hidden');
+                envelope.classList.remove('hidden');
+                envelope.classList.add('fade-in');
+            });
+
+            // Xử lý phong bì thư
+            envelope.addEventListener('click', function() {
+                this.classList.add('open');
+
+                setTimeout(() => {
+                    this.classList.add('hidden');
+                    letter.classList.remove('hidden');
+
+                    setTimeout(() => {
+                        letter.classList.add('show');
+
+                        // 🎆 BẮN PHÁO HOA
+                        startFireworks();
+
+                    }, 100);
+
+                }, 800);
+            });
+
+            function createFirework() {
+                const centerX = Math.random() * window.innerWidth;
+                const centerY = Math.random() * (window.innerHeight * 0.6);
+
+                const colors = [
+                    '#ff4f9a',
+                    '#ffcc00',
+                    '#ff6b6b',
+                    '#a855f7',
+                    '#38bdf8',
+                    '#ffffff'
+                ];
+
+                const color = colors[Math.floor(Math.random() * colors.length)];
+
+                const particleCount = 35;
+
+                for (let i = 0; i < particleCount; i++) {
+                    const particle = document.createElement('div');
+
+                    particle.className = 'firework-particle';
+
+                    particle.style.left = centerX + 'px';
+                    particle.style.top = centerY + 'px';
+                    particle.style.background = color;
+                    particle.style.boxShadow = `0 0 8px ${color}`;
+
+                    const angle = Math.random() * Math.PI * 2;
+                    const distance = 50 + Math.random() * 100;
+
+                    const x = Math.cos(angle) * distance;
+                    const y = Math.sin(angle) * distance;
+
+                    particle.style.setProperty('--x', `${x}px`);
+                    particle.style.setProperty('--y', `${y}px`);
+
+                    document.body.appendChild(particle);
+
+                    setTimeout(() => {
+                        particle.remove();
+                    }, 1000);
+                }
+            }
+
+            function startFireworks() {
+                let count = 0;
+
+                const interval = setInterval(() => {
+                    createFirework();
+                    count++;
+
+                    if (count >= 15) {
+                        clearInterval(interval);
+                    }
+                }, 500);
+            }
+
+            const loaderImage = document.getElementById('loaderImage');
+            const loadingProgress = document.getElementById('loadingProgress');
+            const loadingPercent = document.getElementById('loadingPercent');
+            const appLoader = document.getElementById('appLoader');
+
+            const loaderImages = [
+                'pic1.jpg',
+                'pic2.jpg',
+                'pic3.jpg',
+                'pic4.jpg'
+            ];
+
+            let currentImage = 0;
+            let progress = 0;
+
+            // Đổi ảnh liên tục
+            const imageLoop = setInterval(() => {
+                currentImage = (currentImage + 1) % loaderImages.length;
+                loaderImage.src = loaderImages[currentImage];
+            }, 700);
+
+
+            // Loading từ 0 → 100%
+            const loading = setInterval(() => {
+                progress++;
+
+                loadingProgress.style.width = progress + '%';
+                loadingPercent.textContent = progress + '%';
+
+                // Load xong
+                if (progress >= 100) {
+                    clearInterval(loading);
+                    clearInterval(imageLoop);
+
+                    // =========================
+                    // LOADING HOÀN TẤT
+                    // =========================
+
+                    // Đảm bảo đúng 100%
+                    loadingProgress.style.width = '100%';
+                    loadingPercent.textContent = '100%';
+
+                    // Thanh loading phát sáng
+                    loadingProgress.classList.add('loading-complete');
+                    loaderImage.classList.add('loader-complete-image');
+
+                    // Đổi nội dung
+                    setTimeout(() => {
+                        document.getElementById('loadingText').style.display = 'none';
+
+                        document.getElementById('doneMessage').style.display = 'block';
+
+                        // Sau khi hiện "Đã xong" mới chuyển trang
+                        setTimeout(() => {
+                            appLoader.style.transition = 'opacity 1.5s ease';
+                            appLoader.style.opacity = '0';
+
+                            setTimeout(() => {
+                                appLoader.remove();
+                            }, 1500);
+
+                        }, 3000);
+
+                    }, 1000);
+                }
+            }, 40);
+        });
+    </script>
+</body>
+</html>
