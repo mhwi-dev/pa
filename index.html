@@ -173,10 +173,19 @@
         }
 
         .loopy-float {
-            animation: float 6s ease-in-out infinite;
+            animation: float 8s ease-in-out infinite;
             pointer-events: none;
             z-index: 0;
+            will-change: transform;
         }
+
+        .memory-card,
+            .memory-result,
+            .memory-album,
+            #mainContent {
+                position: relative;
+                z-index: 2;
+            }
 
         @media (max-width: 767px) {
             .loopy-float {
