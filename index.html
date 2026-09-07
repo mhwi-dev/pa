@@ -1634,48 +1634,48 @@
                 }
                 
                 // Kiểm tra xem đã có memory chưa
-                loadMemory()
-                    .then(savedImage => {
-                        if (savedImage && savedImage.length > 0) {
-                            capturedMemories = savedImage;
+                // loadMemory()
+                //     .then(savedImage => {
+                //         if (savedImage && savedImage.length > 0) {
+                //             capturedMemories = savedImage;
 
-                            const memoryAlbum = document.getElementById('memoryAlbum');
-                            const memoryAlbumGrid = memoryAlbum.querySelector('.memory-album-grid');
+                //             const memoryAlbum = document.getElementById('memoryAlbum');
+                //             const memoryAlbumGrid = memoryAlbum.querySelector('.memory-album-grid');
 
-                            memoryAlbumGrid.innerHTML = '';
+                //             memoryAlbumGrid.innerHTML = '';
 
-                            savedImage.forEach((image, index) => {
-                                const img = document.createElement('img');
+                //             savedImage.forEach((image, index) => {
+                //                 const img = document.createElement('img');
 
-                                img.src = image;
-                                img.alt = `Kỷ niệm ${index + 1}`;
+                //                 img.src = image;
+                //                 img.alt = `Kỷ niệm ${index + 1}`;
 
-                                img.className =
-                                    'w-full aspect-square object-cover rounded-sm';
+                //                 img.className =
+                //                     'w-full aspect-square object-cover rounded-sm';
 
-                                memoryAlbumGrid.appendChild(img);
-                            });
+                //                 memoryAlbumGrid.appendChild(img);
+                //             });
 
-                            const now = new Date();
+                //             const now = new Date();
 
-                            memoryDate.textContent = now.toLocaleDateString(
-                                'vi-VN',
-                                {
-                                    day: '2-digit',
-                                    month: '2-digit',
-                                    year: 'numeric'
-                                }
-                            );
+                //             memoryDate.textContent = now.toLocaleDateString(
+                //                 'vi-VN',
+                //                 {
+                //                     day: '2-digit',
+                //                     month: '2-digit',
+                //                     year: 'numeric'
+                //                 }
+                //             );
 
-                            const polaroidFrame = document.querySelector('.polaroid-frame');
+                //             const polaroidFrame = document.querySelector('.polaroid-frame');
 
-                            if (polaroidFrame) {
-                                polaroidFrame.classList.add('hidden');
-                            }
+                //             if (polaroidFrame) {
+                //                 polaroidFrame.classList.add('hidden');
+                //             }
 
-                            memoryResult.classList.remove('hidden');
-                            return;
-                        }
+                //             memoryResult.classList.remove('hidden');
+                //             return;
+                //         }
 
                         startTypingEffect();
                     })
