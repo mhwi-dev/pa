@@ -1205,6 +1205,24 @@
                 transform: translateX(12px);
             }
         }
+
+        @media (max-width: 767px) {
+
+            .polaroid-frame {
+                width: min(84vw, 350px);
+                padding: 11px 11px 17px;
+            }
+
+            .memory-result {
+                padding: 16px;
+            }
+
+            .memory-result::before,
+            .memory-result::after {
+                font-size: 42px;
+                opacity: 0.28;
+            }
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col items-center justify-center p-4">
