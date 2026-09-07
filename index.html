@@ -37,32 +37,86 @@
             100% { transform: scale(1); }
         }
 
-        .envelope {
-            transition: all 0.5s ease;
-            transform-style: preserve-3d;
-        }
-
-        .envelope.open {
-            transform: rotateX(180deg);
-        }
-
-        .letter {
-            transform: translateY(100%);
-            transition: all 0.8s ease;
-            opacity: 0;
-        }
-
-        .letter.show {
-            transform: translateY(0);
-            opacity: 1;
-        }
-
         .music-control {
             transition: all 0.3s ease;
         }
 
         .music-control:hover {
             transform: scale(1.1);
+        }
+        /* =========================
+        MEMORY CARDS
+        ========================= */
+
+        .memory-card {
+            display: none;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow:
+                0 15px 35px rgba(80, 20, 40, 0.12),
+                0 5px 15px rgba(80, 20, 40, 0.08);
+            border: 1px solid rgba(244, 114, 182, 0.15);
+
+            opacity: 0;
+            transform: translateX(60px) scale(0.96);
+        }
+
+        .memory-card.active {
+            display: block;
+            animation: memoryCardEnter 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        .memory-image {
+            width: 100%;
+            height: 330px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .memory-content {
+            padding: 30px 25px 35px;
+        }
+
+        .memory-text {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.15rem;
+            line-height: 1.9;
+            color: #db2777;
+        }
+
+        @keyframes memoryCardEnter {
+            0% {
+                opacity: 0;
+                transform: translateX(60px) scale(0.96);
+            }
+
+            60% {
+                opacity: 1;
+                transform: translateX(-8px) scale(1.01);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateX(0) scale(1);
+            }
+        }
+
+        .memory-card.exit {
+            display: block;
+            animation: memoryCardExit 0.8s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+        }
+
+        @keyframes memoryCardExit {
+            0% {
+                opacity: 1;
+                transform: translateX(0) scale(1);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateX(-70px) scale(0.96);
+            }
         }
 
         /* Animation for typing text */
@@ -121,7 +175,14 @@
         .loopy-float {
             animation: float 6s ease-in-out infinite;
         }
-        
+
+        @media (max-width: 767px) {
+            .loopy-float {
+                width: 80px;
+                opacity: 0.35;
+            }
+        }
+                
         /* Overlay styles */
         .overlay {
             position: fixed;
@@ -633,6 +694,514 @@
             margin: 0;
             text-align: center;
         }
+
+        /* ================================
+        CAMERA SCREEN
+        ================================ */
+
+        .camera-screen {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100dvh;
+            background: #111;
+            z-index: 9999;
+
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .camera-header {
+            flex: 0 0 auto;
+            padding: 18px 20px;
+            text-align: center;
+            color: white;
+            font-family: 'Quicksand', sans-serif;
+            letter-spacing: 2px;
+            font-size: 0.85rem;
+        }
+
+        .camera-container {
+            position: relative;
+            flex: 1;
+            min-height: 0;
+            overflow: hidden;
+            background: #000;
+        }
+
+        #cameraVideo {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: cover;
+        }
+
+        .camera-controls {
+            flex: 0 0 auto;
+            height: 110px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 45px;
+            background: #111;
+        }
+
+        .camera-control-btn {
+            width: 46px;
+            height: 46px;
+            border: none;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.12);
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        .capture-btn {
+            width: 68px;
+            height: 68px;
+            border: 4px solid white;
+            border-radius: 50%;
+            background: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .capture-btn span {
+            width: 54px;
+            height: 54px;
+            border-radius: 50%;
+            background: white;
+            display: block;
+        }
+
+        .camera-error {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        .camera-error p {
+            margin-bottom: 20px;
+        }
+
+        .camera-error button {
+            border: none;
+            border-radius: 999px;
+            padding: 10px 22px;
+            background: #ec4899;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        @media (min-width: 768px) {
+            .camera-container {
+                max-width: 500px;
+                width: 100%;
+                margin: 0 auto;
+            }
+        }
+
+        /* CAMERA FLASH */
+        .camera-flash {
+            position: fixed;
+            inset: 0;
+            background: white;
+            z-index: 10000;
+            pointer-events: none;
+            opacity: 0;
+        }
+
+        .camera-flash.active {
+            animation: cameraFlash 0.35s ease-out;
+        }
+
+        @keyframes cameraFlash {
+            0% {
+                opacity: 0;
+            }
+
+            25% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+
+        /* ================================
+        MEMORY RESULT
+        ================================ */
+
+        .memory-result {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100dvh;
+            z-index: 9998;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            padding: 25px;
+
+            background:
+                radial-gradient(
+                    circle at center,
+                    #fff7fb 0%,
+                    #ffeef6 55%,
+                    #fce7f3 100%
+                );
+
+            overflow: hidden;
+        }
+
+        .polaroid-frame {
+            width: min(88vw, 390px);
+            background: #fff;
+            padding: 14px 14px 22px;
+
+            box-shadow:
+                0 20px 45px rgba(80, 20, 40, 0.18),
+                0 5px 15px rgba(80, 20, 40, 0.1);
+
+            transform: rotate(-1.5deg);
+
+            animation: polaroidAppear 1s
+                cubic-bezier(0.22, 1, 0.36, 1)
+                forwards;
+        }
+
+        .memory-album {
+            position: relative;
+
+            width: min(92vw, 650px);
+
+            background: #fff;
+
+            padding: 28px 28px 24px;
+
+            border: 1px solid rgba(244, 114, 182, 0.25);
+
+            border-radius: 6px;
+
+            box-shadow:
+                0 20px 45px rgba(80, 20, 40, 0.18),
+                0 5px 15px rgba(80, 20, 40, 0.1);
+
+            overflow: hidden;
+        }
+
+        .memory-album::before {
+            content: "✿\A♡\A✦\A♡\A✿";
+
+            position: absolute;
+            left: 10px;
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            white-space: pre;
+            text-align: center;
+
+            font-size: 18px;
+            line-height: 2.2;
+
+            color: #f9a8d4;
+            opacity: 0.65;
+
+            pointer-events: none;
+        }
+
+        .memory-album::after {
+            content: "✿\A♡\A✦\A♡\A✿";
+
+            position: absolute;
+            right: 10px;
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            white-space: pre;
+            text-align: center;
+
+            font-size: 18px;
+            line-height: 2.2;
+
+            color: #f9a8d4;
+            opacity: 0.65;
+
+            pointer-events: none;
+        }
+
+        .memory-album-title {
+            text-align: center;
+            margin-bottom: 18px;
+
+            font-family: 'Quicksand', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 4px;
+
+            color: #9d174d;
+        }
+
+        .memory-album-title span {
+            color: #f472b6;
+            margin: 0 8px;
+        }
+
+        .memory-album-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+
+            position: relative;
+            padding: 8px;
+        }
+
+        .memory-album-grid::before {
+            content: "♡  ✦  ♡";
+            position: absolute;
+
+            left: 50%;
+            top: 50%;
+
+            transform: translate(-50%, -50%);
+
+            font-size: 14px;
+            letter-spacing: 3px;
+
+            color: #f472b6;
+            opacity: 0.8;
+
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .memory-album-photo {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+
+            object-fit: cover;
+            display: block;
+
+            border: 1px solid rgba(244, 114, 182, 0.15);
+            border-radius: 3px;
+
+            box-shadow:
+                0 4px 10px rgba(80, 20, 40, 0.08);
+        }
+
+        .memory-album-footer {
+            text-align: center;
+            margin-top: 20px;
+
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.2rem;
+
+            color: #ec4899;
+        }
+
+        .memory-result #memoryAlbum img {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* DECORATION AROUND MEMORY FRAME */
+
+        .memory-result::before {
+            content: "〰〰〰〰〰";
+
+            position: absolute;
+
+            left: 3%;
+            top: 50%;
+
+            transform: translateY(-50%) rotate(-90deg);
+
+            font-size: 55px;
+            letter-spacing: -8px;
+
+            color: #f9a8d4;
+            opacity: 0.45;
+
+            pointer-events: none;
+
+            z-index: 0;
+        }
+
+        .memory-result::after {
+            content: "〰〰〰〰〰";
+
+            position: absolute;
+
+            right: 3%;
+            top: 50%;
+
+            transform: translateY(-50%) rotate(90deg);
+
+            font-size: 55px;
+            letter-spacing: -8px;
+
+            color: #f9a8d4;
+            opacity: 0.45;
+
+            pointer-events: none;
+
+            z-index: 0;
+        }
+
+        .memory-saved {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+
+            margin-top: 10px;
+
+            font-family: 'Quicksand', sans-serif;
+            color: #db2777;
+        }
+
+        .memory-saved::before,
+        .memory-saved::after {
+            font-size: 18px;
+            color: #f9a8d4;
+            white-space: nowrap;
+        }
+
+        .memory-saved::before {
+            content: "✿  ♡  ─────";
+        }
+
+        .memory-saved::after {
+            content: "─────  ♡  ✿";
+        }
+
+        .memory-saved::before {
+            content: "✿  ♡";
+        }
+
+        .memory-saved::after {
+            content: "♡  ✿";
+        }
+
+        .memory-result #memoryAlbum > div {
+            width: 100%;
+        }
+
+        .polaroid-title {
+            text-align: center;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 0.75rem;
+            letter-spacing: 3px;
+            color: #9d174d;
+            padding: 8px 0 12px;
+            font-weight: 600;
+        }
+
+        #capturedPhoto {
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            object-fit: cover;
+            display: block;
+            background: #eee;
+        }
+
+        .polaroid-info {
+            text-align: center;
+            padding-top: 14px;
+        }
+
+        #memoryDate {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 0.75rem;
+            color: #9d174d;
+            letter-spacing: 1px;
+            margin-bottom: 7px;
+        }
+
+        .polaroid-caption {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.5rem;
+            color: #db2777;
+        }
+
+        .memory-saved {
+            margin-top: 25px;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 0.9rem;
+            color: #be185d;
+
+            opacity: 0;
+            animation: memorySavedAppear 0.8s ease forwards;
+            animation-delay: 0.7s;
+        }
+
+        @keyframes polaroidAppear {
+            0% {
+                opacity: 0;
+                transform: translateY(35px) rotate(-5deg) scale(0.92);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0) rotate(-1.5deg) scale(1);
+            }
+        }
+
+        @keyframes memorySavedAppear {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .kiss-direction {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+        }
+
+        .point-right {
+            display: inline-block;
+            font-size: 42px;
+            animation: pointRight 1s ease-in-out infinite;
+        }
+
+        @keyframes pointRight {
+            0%, 100% {
+                transform: translateX(0);
+            }
+
+            50% {
+                transform: translateX(12px);
+            }
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col items-center justify-center p-4">
@@ -722,12 +1291,74 @@
         <h1 class="dancing-font text-5xl md:text-6xl font-bold text-pink-500 mb-8">Hế Lô Camay!!</h1>
 
         <!-- Phần tâm tư -->
-        <div id="typingSection" class="bg-white rounded-xl shadow-lg p-8 mb-8">
-            <div class="heart inline-block text-pink-500 text-4xl mb-6">❤️</div>
-            <p id="typingText" class="typing-container text-lg md:text-xl text-pink-600 font-quicksand">
-                Hong biết em có bất ngờ khi anh làm giống như vậy kh he  😁. Hè mà cứ ở nhà miết thôi 😑, biết khi anh làm cái này là em hết cơ hội được ở nhà rồi đó 🤗, với lại cũng là lúc để mình gặp nhau nà, cũng cóa 1 chút hồi hộp đồ đó nhma có cái tiền đề là trong dis nói nhiều như mấy bà tám vậy nên chắc sẽ đỡ hơn đóa kakakaka. 
-                <span class="font-dancing text-3xl text-pink-500 italic leading-relaxed">Thế nên là...</span>
-            </p>
+        <div id="typingSection" class="mb-8">
+
+            <!-- CARD 1 -->
+            <div class="memory-card active">
+                <img src="pic1.jpg" alt="Kỷ niệm 1" class="memory-image">
+
+                <div class="memory-content">
+                    <div class="heart text-pink-500 text-3xl mb-4">❤️</div>
+
+                    <p class="memory-text">
+                        Hong biết em có bất ngờ khi anh làm giống như vậy kh he 😁.
+                    </p>
+                </div>
+            </div>
+
+            <!-- CARD 2 -->
+            <div class="memory-card">
+                <img src="pic2.jpg" alt="Kỷ niệm 2" class="memory-image">
+
+                <div class="memory-content">
+                    <p class="memory-text">
+                        Hè mà cứ ở nhà miết thôi 😑.
+                    </p>
+                </div>
+            </div>
+
+            <!-- CARD 3 -->
+            <div class="memory-card">
+                <img src="pic3.jpg" alt="Kỷ niệm 3" class="memory-image">
+
+                <div class="memory-content">
+                    <p class="memory-text">
+                        Biết khi anh làm cái này là em hết cơ hội được ở nhà rồi đó 🤗.
+                    </p>
+                </div>
+            </div>
+
+            <!-- CARD 4 -->
+            <div class="memory-card">
+                <img src="pic4.jpg" alt="Kỷ niệm 4" class="memory-image">
+
+                <div class="memory-content">
+                    <p class="memory-text">
+                        Với lại cũng là lúc để mình gặp nhau nà.
+                    </p>
+                </div>
+            </div>
+
+            <!-- CARD 5 -->
+            <div class="memory-card">
+                <div class="memory-content">
+                    <div class="heart text-pink-500 text-3xl mb-4">❤️</div>
+
+                    <p class="memory-text">
+                        Cũng cóa 1 chút hồi hộp đồ đó nhma có cái tiền đề là trong dis nói nhiều như mấy bà tám vậy nên chắc sẽ đỡ hơn đóa kakakaka.
+                    </p>
+                </div>
+            </div>
+
+            <!-- CARD CUỐI -->
+            <div class="memory-card">
+                <div class="memory-content">
+                    <p class="font-dancing text-4xl text-pink-500 italic">
+                        Thế nên là...
+                    </p>
+                </div>
+            </div>
+
         </div>
 
         <!-- Câu h hỏi -->
@@ -764,101 +1395,204 @@
 
         </div>
 
-        <!-- Phong bì thư -->
-        <div id="envelope" class="hidden envelope relative w-64 h-40 mx-auto mb-8 cursor-pointer">
-            <div class="absolute inset-0 bg-pink-400 rounded-lg shadow-lg"></div>
-            <div class="absolute top-0 left-0 right-0 h-20 bg-pink-300 rounded-t-lg"></div>
-            <div class="absolute top-16 left-0 right-0 border-t-32 border-t-pink-300 border-l-32 border-l-transparent border-r-32 border-r-transparent"></div>
-            <div class="absolute inset-2 bg-pink-100 rounded-sm flex items-center justify-center">
-                <span class="dancing-font text-xl text-pink-600">Lịch trình buổi hôm đó  ❤️</span>
+        <!-- FINAL REQUEST -->
+        <div id="finalRequest" class="hidden text-center px-6">
+
+            <div class="heart text-pink-500 text-4xl mb-6">
+                ❤️
             </div>
+
+            <h2 class="font-dancing text-4xl text-pink-500 mb-5">
+                Mình có một điều cuối cùng muốn nhờ cậu
+            </h2>
+
+            <p class="text-pink-400 text-lg leading-relaxed mb-8">
+                Cậu chụp một tấm ảnh chung với anh nhé ❤️
+            </p>
+
+            <button
+                id="openCameraBtn"
+                class="px-7 py-3 rounded-full bg-pink-500 text-white font-semibold shadow-lg">
+                Chụp ảnh 📸
+            </button>
+
         </div>
 
-        <!-- Lá thư -->
-        <div id="letter" class="letter bg-white rounded-lg shadow-xl p-8 max-w-2xl mx-auto hidden">
-            <div class="border-2 border-pink-200 rounded p-6">
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="dancing-font text-3xl text-pink-600">Lịch trình hẹn hò</h2>
-                    <div class="heart text-pink-500 text-2xl">💌</div>
+        <!-- SURPRISE SCREEN -->
+        <div id="surpriseScreen" class="hidden fixed inset-0 z-[10000] flex items-center justify-center bg-pink-50 px-6 overflow-hidden">
+
+            <div class="text-center relative z-10">
+
+                <div class="text-6xl mb-6">
+                    🎁
                 </div>
 
-                <div class="text-left space-y-6">
-                    <div class="flex items-start">
-                        <div class="bg-pink-100 text-pink-700 rounded-full w-10 h-10 flex items-center justify-center mr-4 flex-shrink-0">8h</div>
-                        <div>
-                            <h3 class="font-bold text-pink-700">Đón em</h3>
-                            <p class="text-gray-600">Anh sẽ đón Boo tại nhà của em nhá!</p>
-                        </div>
-                    </div>
+                <h2 class="text-3xl md:text-4xl font-bold text-pink-600 mb-5">
+                    Hình phạt của em đây! 😌
+                </h2>
 
-                    <div class="flex items-start">
-                        <div class="bg-pink-100 text-pink-700 rounded-full w-10 h-10 flex items-center justify-center mr-4 flex-shrink-0">9h</div>
-                        <div>
-                            <h3 class="font-bold text-pink-700">Ăn Sáng </h3>
-                            <p class="text-gray-600">Ăn sáng cùng nhau tại 100gr Beefsteak</p>
-                        </div>
-                    </div>
+                <div class="kiss-direction">
+                    <p class="text-2xl md:text-3xl font-semibold text-gray-700">
+                        💋 Hun anh 10 cái
+                    </p>
 
-                    <div class="flex items-start">
-                        <div class="bg-pink-100 text-pink-700 rounded-full w-10 h-10 flex items-center justify-center mr-4 flex-shrink-0">10h</div>
-                        <div>
-                            <h3 class="font-bold text-pink-700">Tham quan sở thú</h3>
-                            <p class="text-gray-600">Thảo cầm viên sài gòn, nơi chục năm rồi 2 mình chưa đi :D</p>
-                        </div>
-                    </div>
-
-                    <div class="flex items-start">
-                        <div class="bg-pink-100 text-pink-700 rounded-full w-10 h-10 flex items-center justify-center mr-4 flex-shrink-0">14h</div>
-                        <div>
-                            <h3 class="font-bold text-pink-700">Xem phim</h3>
-                            <p class="text-gray-600">Phim kinh dị Út Lan tại CGV Aeon Tân Phú</p>
-                        </div>
-                    </div>
-
-                    <div class="flex items-start">
-                        <div class="bg-pink-100 text-pink-700 rounded-full w-10 h-10 flex items-center justify-center mr-4 flex-shrink-0">17h</div>
-                        <div>
-                            <h3 class="font-bold text-pink-700">Khu trò chơi Aeon</h3>
-                            <p class="text-gray-600">Trở về tuổi thơ với các trò con nít nhể, quậy banh xác luôn </p>
-                        </div>
-                    </div>
-
-                    <div class="flex items-start">
-                        <div class="bg-pink-100 text-pink-700 rounded-full w-10 h-10 flex items-center justify-center mr-4 flex-shrink-0">19h</div>
-                        <div>
-                            <h3 class="font-bold text-pink-700">Ăn tối</h3>
-                            <p class="text-gray-600">Tất cả các món trừ ghẹ và cá nhóe heheheeh</p>
-                        </div>
-                    </div>
-
-                    <div class="flex items-start">
-                        <div class="bg-pink-100 text-pink-700 rounded-full w-10 h-10 flex items-center justify-center mr-4 flex-shrink-0">22h</div>
-                        <div>
-                            <h3 class="font-bold text-pink-700">Đi dạo/Về nhà</h3>
-                            <p class="text-gray-600">Đi dạo ngắm sài gòn cùng anh nhá và cuối cùng là Anh sẽ đưa em về tận nhà an toàn</p>
-                        </div>
-                    </div>
+                    <span class="point-right">👉</span>
                 </div>
 
-                <div class="mt-8 pt-4 border-t border-pink-200">
-                    <p class="dancing-font text-2xl text-pink-600">Hẹn gặp em vào thứ 4 tuần này nhé!</p>
-                    <p class="text-gray-600 mt-2">Anh sẽ chuẩn bị thật nhiều điều bất ngờ cho em đó 😜❤️</p>
+                <p class="text-gray-500 text-lg mt-3">
+                    Ảnh đang ngồi bên phải đó... quay sang hun đi 😚❤️
+                </p>
+
+                <button
+                    id="proofPhotoBtn"
+                    class="mt-6 px-7 py-3 bg-pink-500 text-white font-semibold rounded-full shadow-lg active:scale-95 transition"
+                >
+                    Rồi, chụp lại làm bằng chứng :))) 📸
+                </button>
+
+                <p class="text-gray-500 text-lg">
+                    Không được trốn đâu nha 😏❤️
+                </p>
+
+            </div>
+
+        </div>
+
+        <!-- FINAL END SCREEN -->
+        <div id="finalEndScreen"
+            class="hidden fixed inset-0 z-[10001] flex items-center justify-center bg-pink-50 px-6 overflow-hidden">
+
+            <div class="text-center relative z-10">
+
+                <div class="text-6xl mb-6">
+                    ❤️
+                </div>
+
+                <h2 class="text-3xl md:text-4xl font-bold text-pink-600 mb-5">
+                    Bằng chứng đã được ghi nhận! 📸
+                </h2>
+
+                <p class="text-xl text-gray-700 mb-3">
+                    10 cái hun đã được xác nhận 😌💋
+                </p>
+
+                <img
+                    id="finalProofPhoto"
+                    src=""
+                    alt="Ảnh bằng chứng"
+                    class="mx-auto mt-5 w-64 h-64 object-cover rounded-2xl shadow-xl border-4 border-white"
+                >
+
+            </div>
+
+        </div>
+
+        <!-- CAMERA SCREEN -->
+        <div id="cameraScreen" class="hidden camera-screen">
+
+            <div class="camera-header">
+                <p>OUR FIRST MEMORY ❤️</p>
+            </div>
+
+            <div class="camera-container">
+                <video id="cameraVideo" autoplay playsinline></video>
+
+                <div id="cameraError" class="camera-error hidden">
+                    <p>Không thể mở camera.</p>
+                    <button id="retryCameraBtn">
+                        Thử lại
+                    </button>
                 </div>
             </div>
+
+            <div class="camera-controls">
+
+                <button id="switchCameraBtn" class="camera-control-btn">
+                    🔄
+                </button>
+
+                <button id="captureBtn" class="capture-btn">
+                    <span></span>
+                </button>
+
+            </div>
+
+            <canvas id="cameraCanvas" class="hidden"></canvas>
+
+        </div>
+
+        <div id="cameraFlash" class="camera-flash"></div>
+
+        <!-- MEMORY RESULT -->
+        <div id="memoryResult" class="hidden memory-result">
+
+            <!-- POLAROID PREVIEW -->
+            <div class="polaroid-frame">
+
+                <div class="polaroid-title">
+                    OUR FIRST MEMORY
+                </div>
+
+                <img id="capturedPhoto" src="" alt="Our first memory">
+
+                <div class="polaroid-info">
+                    <p id="memoryDate"></p>
+
+                    <div class="flex justify-center gap-4 mt-6">
+                        <button id="retakeBtn"
+                            class="px-6 py-3 rounded-full bg-gray-200 text-gray-700 font-semibold">
+                            📸 Chụp lại
+                        </button>
+
+                        <button id="usePhotoBtn"
+                            class="px-6 py-3 rounded-full bg-pink-500 text-white font-semibold">
+                            ❤️ Dùng ảnh này
+                        </button>
+                    </div>
+
+                    <p class="polaroid-caption">
+                        THE BEGINNING ❤️
+                    </p>
+                </div>
+
+            </div>
+
+            <!-- ALBUM 4 ẢNH -->
+            <div id="memoryAlbum"
+                class="memory-album">
+
+                <div class="memory-album-title">
+                    <span>♡</span>
+                    OUR MEMORIES
+                    <span>♡</span>
+                </div>
+
+                <div class="memory-album-grid"></div>
+
+                <div class="memory-album-footer">
+                    ✦ together, always ✦
+                </div>
+
+            </div>
+
+            <p class="memory-saved">
+                Memory saved.
+            </p>
+
         </div>
 
         <!-- Loopy và trang trí -->
         <img src="https://i.pinimg.com/736x/a9/5a/25/a95a251fb2b24b7247ac07d1a7798030.jpg"
-             class="hidden md:block fixed -left-20 bottom-0 w-40 opacity-50 loopy-float">
+             class="block fixed -left-20 bottom-0 w-40 opacity-50 loopy-float">
 
         <img src="https://i.pinimg.com/736x/e3/f3/92/e3f3920b527a4bee5a08614c5d8f3d0f.jpg"
-             class="hidden md:block fixed -right-20 top-1/3 w-40 opacity-50 loopy-float">
+             class="block fixed -right-20 top-1/3 w-40 opacity-50 loopy-float">
 
         <img src="https://i.pinimg.com/736x/86/c5/04/86c5043ddd2d0b72d916853f37d94eb1.jpg"
-             class="hidden md:block fixed left-1/4 top-10 w-28 opacity-30 loopy-float">
+             class="block fixed left-1/4 top-10 w-28 opacity-30 loopy-float">
 
         <img src="https://i.pinimg.com/736x/16/a1/bf/16a1bfdaee8c365614d5f108e3890c2a.jpg"
-             class="hidden md:block fixed right-1/4 bottom-20 w-28 opacity-30 loopy-float">
+             class="block fixed right-1/4 bottom-20 w-28 opacity-30 loopy-float">
     </div>
 
     <script>
@@ -896,10 +1630,58 @@
                     });
                 }
                 
-                // Bắt đầu hiệu ứng gõ chữ
-                startTypingEffect();
-            });
-            
+                // Kiểm tra xem đã có memory chưa
+                loadMemory()
+                    .then(savedImage => {
+                        if (savedImage && savedImage.length > 0) {
+                            capturedMemories = savedImage;
+
+                            const memoryAlbum = document.getElementById('memoryAlbum');
+                            const memoryAlbumGrid = memoryAlbum.querySelector('.memory-album-grid');
+
+                            memoryAlbumGrid.innerHTML = '';
+
+                            savedImage.forEach((image, index) => {
+                                const img = document.createElement('img');
+
+                                img.src = image;
+                                img.alt = `Kỷ niệm ${index + 1}`;
+
+                                img.className =
+                                    'w-full aspect-square object-cover rounded-sm';
+
+                                memoryAlbumGrid.appendChild(img);
+                            });
+
+                            const now = new Date();
+
+                            memoryDate.textContent = now.toLocaleDateString(
+                                'vi-VN',
+                                {
+                                    day: '2-digit',
+                                    month: '2-digit',
+                                    year: 'numeric'
+                                }
+                            );
+
+                            const polaroidFrame = document.querySelector('.polaroid-frame');
+
+                            if (polaroidFrame) {
+                                polaroidFrame.classList.add('hidden');
+                            }
+
+                            memoryResult.classList.remove('hidden');
+                            return;
+                        }
+
+                        startTypingEffect();
+                    })
+                    .catch(error => {
+                        console.error('Cannot load memory:', error);
+                        startTypingEffect();
+                    });
+                });
+                
             // Cập nhật trạng thái nút nhạc
             function updateMusicButton() {
                 if (isMusicPlaying) {
@@ -930,66 +1712,386 @@
             });
             
             // Hiệu ứng gõ chữ
-            // Hiệu ứng gõ chữ
             function startTypingEffect() {
                 const typingSection = document.getElementById('typingSection');
-                const quizSection = document.getElementById('quizSection');
-                const typingText = document.getElementById('typingText');
+                const cards = typingSection.querySelectorAll('.memory-card');
 
-                const fullText = typingText.textContent.trim();
+                let currentCard = 0;
+                const cardDuration = 4500;
 
-                typingText.textContent = '';
+                function showNextCard() {
+                    const current = cards[currentCard];
 
-                let i = 0;
-                const speed = 70;
-
-                function typeWriter() {
-                    if (i < fullText.length) {
-
-                        typingText.textContent += fullText.charAt(i);
-                        i++;
-
-                        setTimeout(typeWriter, speed);
-
-                    } else {
-
-                        // Đợi một chút sau khi gõ xong
+                    // Card cuối cùng → chuyển sang câu hỏi
+                    if (currentCard === cards.length - 1) {
                         setTimeout(() => {
-
-                            // Tâm tư bắt đầu kéo sang trái
                             typingSection.classList.add('heartfelt-exit');
 
-                            // Sau 450ms, câu hỏi bắt đầu xuất hiện
                             setTimeout(() => {
-
                                 typingSection.classList.add('hidden');
                                 typingSection.classList.remove('heartfelt-exit');
 
                                 quizSection.classList.remove('hidden');
                                 quizSection.classList.add('question-enter');
+                            }, 1000);
 
-                            }, 650);
+                        }, 3500);
 
-                        }, 1000);
+                        return;
                     }
+
+                    setTimeout(() => {
+                        current.classList.remove('active');
+                        current.classList.add('exit');
+
+                        setTimeout(() => {
+                            current.classList.remove('exit');
+
+                            currentCard++;
+
+                            cards[currentCard].classList.add('active');
+
+                            showNextCard();
+                        }, 800);
+
+                    }, cardDuration);
                 }
 
-                typeWriter();
+                cards[0].classList.add('active');
+
+                showNextCard();
             }
                     
             // Xử lý câu h hỏi
+            const quizSection = document.getElementById('quizSection');
             const yesBtn = document.getElementById('yesBtn');
             const noBtn = document.getElementById('noBtn');
             const noMessage = document.getElementById('noMessage');
             const continueBtn = document.getElementById('continueBtn');
-            const envelope = document.getElementById('envelope');
-            const letter = document.getElementById('letter');
             const memeImage = document.getElementById('memeImage');
 
             yesBtn.addEventListener('click', function() {
                 quizSection.classList.add('hidden');
-                envelope.classList.remove('hidden');
-                envelope.classList.add('fade-in');
+
+                const finalRequest = document.getElementById('finalRequest');
+
+                finalRequest.classList.remove('hidden');
+                finalRequest.classList.add('fade-in');
+            });
+
+            const finalRequest = document.getElementById('finalRequest');
+            const cameraScreen = document.getElementById('cameraScreen');
+
+            const openCameraBtn = document.getElementById('openCameraBtn');
+            const proofPhotoBtn = document.getElementById('proofPhotoBtn');
+            const surpriseScreen = document.getElementById('surpriseScreen');
+            const cameraVideo = document.getElementById('cameraVideo');
+            const cameraError = document.getElementById('cameraError');
+            const retryCameraBtn = document.getElementById('retryCameraBtn');
+
+            let cameraStream = null;
+            let currentCamera = 'environment';
+            let capturedMemories = [];
+            let currentCapturedImage = null;
+            let isProofPhoto = false;
+            const MAX_MEMORIES = 4;
+
+            const retakeBtn = document.getElementById('retakeBtn');
+            const usePhotoBtn = document.getElementById('usePhotoBtn');
+
+            retakeBtn.addEventListener('click', function() {
+                currentCapturedImage = null;
+
+                memoryResult.classList.add('hidden');
+                cameraScreen.classList.remove('hidden');
+
+                openCamera();
+            });
+
+            usePhotoBtn.addEventListener('click', function() {
+                if (!currentCapturedImage) return;
+
+                // Ảnh bằng chứng
+                if (isProofPhoto) {
+                    const finalProofPhoto = document.getElementById('finalProofPhoto');
+
+                    if (finalProofPhoto) {
+                        finalProofPhoto.src = currentCapturedImage;
+                    }
+
+                    currentCapturedImage = null;
+                    isProofPhoto = false;
+
+                    cameraScreen.classList.add('hidden');
+                    memoryResult.classList.add('hidden');
+
+                    const finalEndScreen = document.getElementById('finalEndScreen');
+
+                    if (finalEndScreen) {
+                        finalEndScreen.classList.remove('hidden');
+                        finalEndScreen.classList.add('fade-in');
+                    }
+
+                    return;
+                }
+
+                // Ảnh Memory bình thường
+                capturedMemories.push(currentCapturedImage);
+
+                saveMemory(currentCapturedImage)
+                    .then(() => {
+                        console.log('Memory saved locally.');
+                    })
+                    .catch(error => {
+                        console.error('Cannot save memory:', error);
+                    });
+
+                currentCapturedImage = null;
+
+                if (capturedMemories.length < MAX_MEMORIES) {
+                    cameraScreen.classList.remove('hidden');
+                    memoryResult.classList.add('hidden');
+
+                    openCamera();
+                } else {
+                    cameraScreen.classList.add('hidden');
+                    memoryResult.classList.remove('hidden');
+                }
+            });
+
+            async function openCamera() {
+                // Nếu đang có camera thì dừng trước
+                if (cameraStream) {
+                    cameraStream.getTracks().forEach(track => track.stop());
+                }
+
+                cameraError.classList.add('hidden');
+
+                try {
+                    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                        throw new Error('Camera is not supported');
+                    }
+
+                    cameraStream = await navigator.mediaDevices.getUserMedia({
+                        video: {
+                            facingMode: {
+                                ideal: currentCamera
+                            },
+                            width: {
+                                ideal: 1920
+                            },
+                            height: {
+                                ideal: 1080
+                            }
+                        },
+                        audio: false
+                    });
+
+                    cameraVideo.srcObject = cameraStream;
+                    cameraVideo.setAttribute('playsinline', '');
+                    cameraVideo.setAttribute('autoplay', '');
+                    cameraVideo.muted = true;
+
+                    await cameraVideo.play();
+
+                } catch (error) {
+                    console.error('Camera error:', error);
+
+                    cameraError.classList.remove('hidden');
+                }
+            }
+
+            openCameraBtn.addEventListener('click', function() {
+                finalRequest.classList.add('hidden');
+                cameraScreen.classList.remove('hidden');
+
+                // Chỉ tại bước này website mới xin quyền camera
+                openCamera();
+            });
+
+            proofPhotoBtn.addEventListener('click', function() {
+                isProofPhoto = true;
+
+                surpriseScreen.classList.add('hidden');
+                cameraScreen.classList.remove('hidden');
+
+                openCamera();
+            });
+
+            retryCameraBtn.addEventListener('click', function() {
+                openCamera();
+            });
+
+            const switchCameraBtn = document.getElementById('switchCameraBtn');
+
+            switchCameraBtn.addEventListener('click', async function() {
+                currentCamera =
+                    currentCamera === 'environment'
+                        ? 'user'
+                        : 'environment';
+
+                await openCamera();
+            });
+
+            const captureBtn = document.getElementById('captureBtn');
+            const cameraCanvas = document.getElementById('cameraCanvas');
+            const cameraFlash = document.getElementById('cameraFlash');
+
+            const memoryResult = document.getElementById('memoryResult');
+            const capturedPhoto = document.getElementById('capturedPhoto');
+            const memoryDate = document.getElementById('memoryDate');
+
+            const DB_NAME = 'OurFirstMemoryDB';
+            const STORE_NAME = 'memory';
+
+            function saveMemory(imageData) {
+                return new Promise((resolve, reject) => {
+                    const request = indexedDB.open(DB_NAME, 1);
+
+                    request.onupgradeneeded = function(event) {
+                        const db = event.target.result;
+
+                        if (!db.objectStoreNames.contains(STORE_NAME)) {
+                            db.createObjectStore(STORE_NAME);
+                        }
+                    };
+
+                    request.onsuccess = function(event) {
+                        const db = event.target.result;
+
+                        const transaction = db.transaction(STORE_NAME, 'readwrite');
+                        const store = transaction.objectStore(STORE_NAME);
+
+                        const getRequest = store.get('memories');
+
+                        getRequest.onsuccess = function() {
+                            const memories = getRequest.result || [];
+
+                            if (memories.length >= MAX_MEMORIES) {
+                                db.close();
+                                resolve();
+                                return;
+                            }
+
+                            memories.push(imageData);
+
+                            store.put(memories, 'memories');
+                        };
+
+                        transaction.oncomplete = function() {
+                            db.close();
+                            resolve();
+                        };
+
+                        transaction.onerror = function() {
+                            db.close();
+                            reject(transaction.error);
+                        };
+                    };
+
+                    request.onerror = function() {
+                        reject(request.error);
+                    };
+                });
+            }
+
+
+            function loadMemory() {
+                return new Promise((resolve, reject) => {
+                    const request = indexedDB.open(DB_NAME, 1);
+
+                    request.onupgradeneeded = function(event) {
+                        const db = event.target.result;
+
+                        if (!db.objectStoreNames.contains(STORE_NAME)) {
+                            db.createObjectStore(STORE_NAME);
+                        }
+                    };
+
+                    request.onsuccess = function(event) {
+                        const db = event.target.result;
+
+                        const transaction = db.transaction(STORE_NAME, 'readonly');
+                        const store = transaction.objectStore(STORE_NAME);
+
+                        const getRequest = store.get('memories');
+
+                        getRequest.onsuccess = function() {
+                            db.close();
+
+                            resolve(getRequest.result || []);
+                        };
+
+                        getRequest.onerror = function() {
+                            db.close();
+                            reject(getRequest.error);
+                        };
+                    };
+
+                    request.onerror = function() {
+                        reject(request.error);
+                    };
+                });
+            }
+
+            captureBtn.addEventListener('click', function() {
+
+                if (!cameraStream || cameraVideo.readyState < 2) {
+                    return;
+                }
+
+                const width = cameraVideo.videoWidth;
+                const height = cameraVideo.videoHeight;
+
+                cameraCanvas.width = width;
+                cameraCanvas.height = height;
+
+                const ctx = cameraCanvas.getContext('2d');
+
+                ctx.drawImage(
+                    cameraVideo,
+                    0,
+                    0,
+                    width,
+                    height
+                );
+
+                const capturedImage = cameraCanvas.toDataURL('image/jpeg', 0.92);
+                currentCapturedImage = capturedImage;
+
+                console.log('Ảnh đã chụp:', capturedImage);
+
+                cameraFlash.classList.remove('active');
+
+                setTimeout(() => {
+                    capturedPhoto.src = capturedImage;
+
+                    const now = new Date();
+
+                    memoryDate.textContent = now.toLocaleDateString(
+                        'vi-VN',
+                        {
+                            day: '2-digit',
+                            month: '2-digit',
+                            year: 'numeric'
+                        }
+                    );
+
+                    cameraScreen.classList.add('hidden');
+                    memoryResult.classList.remove('hidden');
+
+                }, 350);
+
+                // Force browser restart animation
+                void cameraFlash.offsetWidth;
+
+                cameraFlash.classList.add('active');
+
+                // Dừng camera sau khi chụp
+                if (cameraStream) {
+                    cameraStream.getTracks().forEach(track => track.stop());
+                    cameraStream = null;
+                }
             });
 
             noBtn.addEventListener('click', function() {
@@ -1034,27 +2136,14 @@
 
             continueBtn.addEventListener('click', function() {
                 noMessage.classList.add('hidden');
-                envelope.classList.remove('hidden');
-                envelope.classList.add('fade-in');
-            });
 
-            // Xử lý phong bì thư
-            envelope.addEventListener('click', function() {
-                this.classList.add('open');
+                const surpriseScreen = document.getElementById('surpriseScreen');
 
-                setTimeout(() => {
-                    this.classList.add('hidden');
-                    letter.classList.remove('hidden');
-
-                    setTimeout(() => {
-                        letter.classList.add('show');
-
-                        // 🎆 BẮN PHÁO HOA
-                        startFireworks();
-
-                    }, 100);
-
-                }, 800);
+                if (surpriseScreen) {
+                    surpriseScreen.classList.remove('hidden');
+                    surpriseScreen.classList.add('fade-in');
+                    startFireworks();
+                }
             });
 
             function createFirework() {
