@@ -48,35 +48,470 @@
         MEMORY CARDS
         ========================= */
 
+        .memory-stack {
+            position: relative;
+            width: 100%;
+            height: 520px;
+
+            perspective: 900px;
+            perspective-origin: center 45%;
+
+            transform-style: preserve-3d;
+            cursor: pointer;
+            touch-action: manipulation;
+        }
+
+        .intro-memory-letter {
+            
+            position: relative;
+            width: min(92%, 620px);
+            margin: 0 auto 60px;
+            padding: 42px 50px;
+
+            background:
+                radial-gradient(
+                    circle at top left,
+                    rgba(255, 220, 235, 0.45),
+                    transparent 45%
+                ),
+                linear-gradient(
+                    135deg,
+                    #ffffff 0%,
+                    #fffafb 55%,
+                    #fff1f6 100%
+                );
+
+            border: 1px solid rgba(219, 39, 119, 0.15);
+            border-radius: 18px;
+
+            box-shadow:
+                0 20px 50px rgba(219, 39, 119, 0.12),
+                0 4px 12px rgba(0, 0, 0, 0.05);
+
+            text-align: left;
+
+            opacity: 0;
+            transform:
+                translate(50px, 20px)
+                rotateY(18deg)
+                rotateZ(3deg)
+                scale(0.94);
+
+            transform-origin: left center;
+            pointer-events: none;
+        }
+
+        .intro-memory-letter.show-letter {
+            animation: letterReveal 1.2s cubic-bezier(.22, 1, .36, 1) forwards;
+            pointer-events: auto;
+        }
+
+        .intro-memory-letter.letter-exit {
+            animation: letterExit 1.4s cubic-bezier(.22, 1, .36, 1) forwards;
+        }
+
+        @keyframes letterReveal {
+            0% {
+                opacity: 0;
+                transform:
+                    translate(50px, 20px)
+                    rotateY(18deg)
+                    rotateZ(3deg)
+                    scale(0.94);
+            }
+
+            60% {
+                opacity: 1;
+                transform:
+                    translate(-8px, 0)
+                    rotateY(-2deg)
+                    rotateZ(-0.5deg)
+                    scale(1.01);
+            }
+
+            100% {
+                opacity: 1;
+                transform:
+                    translate(0, 0)
+                    rotateY(0deg)
+                    rotateZ(0deg)
+                    scale(1);
+            }
+        }
+
+        @keyframes letterExit {
+            0% {
+                opacity: 1;
+                transform:
+                    translate(0, 0)
+                    rotateY(0deg)
+                    rotateZ(0deg)
+                    scale(1);
+            }
+
+            100% {
+                opacity: 0;
+                transform:
+                    translate(-120px, 0)
+                    rotateY(-25deg)
+                    rotateZ(-8deg)
+                    scale(0.92);
+            }
+        }
+        .intro-memory-letter h2 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.2rem;
+            color: #db2777;
+            margin-bottom: 24px;
+        }
+
+        .intro-memory-letter p {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.05rem;
+            line-height: 1.9;
+            color: #555;
+            margin-bottom: 18px;
+        }
+
+        .intro-memory-letter .letter-ending {
+            margin-top: 28px;
+            margin-bottom: 0;
+
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.45rem;
+            line-height: 1.8;
+            color: #db2777;
+            text-align: center;
+        }
+
+        .next-page-btn {
+            display: block;
+            margin: 32px auto 0;
+            padding: 10px 24px;
+
+            font-family: 'Quicksand', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+
+            color: #db2777;
+            background: rgba(255, 240, 246, 0.8);
+
+            border: 1px solid rgba(219, 39, 119, 0.2);
+            border-radius: 999px;
+
+            cursor: pointer;
+
+            transition:
+                transform 0.3s ease,
+                background 0.3s ease,
+                box-shadow 0.3s ease;
+        }
+
+        .next-page-btn:hover {
+            transform: translateY(-3px);
+            background: #fff0f6;
+            box-shadow: 0 8px 20px rgba(219, 39, 119, 0.15);
+        }
+
+        .next-page-btn:active {
+            transform: translateY(0);
+        }
+
+        .memory-cover {
+
+            opacity: 0;
+            pointer-events: none;
+
+            position: absolute;
+            left: 50%;
+            top: 50%;
+
+            width: min(88vw, 520px);
+            height: 520px;
+
+            transform:
+                translate(-50%, -50%)
+                rotateX(58deg)
+                rotateZ(-2deg)
+                translateY(80px)
+                scale(0.9);
+
+            transform-origin: center center;
+
+            background: linear-gradient(
+                145deg,
+                #fff0f6,
+                #ffd6e7
+            );
+
+            border-radius: 20px;
+
+            border: 2px solid rgba(236, 72, 153, 0.25);
+
+            box-shadow:
+                0 30px 50px rgba(80, 20, 40, 0.25),
+                0 10px 20px rgba(80, 20, 40, 0.15);
+
+            z-index: 100;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            cursor: pointer;
+
+            transition:
+                transform 1s cubic-bezier(.22, 1, .36, 1),
+                opacity 0.8s ease;
+        }
+
+        .memory-cover.open {
+            animation: bookOpen 4.5s cubic-bezier(.22, 1, .36, 1) forwards !important;
+            pointer-events: none;
+        }
+
+        @keyframes bookOpen {
+            0% {
+                transform:
+                    translate(-50%, -50%)
+                    rotateX(82deg)
+                    rotateZ(-2deg)
+                    translateY(80px)
+                    scale(0.9);
+
+                opacity: 1;
+            }
+
+            45% {
+                transform:
+                    translate(-50%, -50%)
+                    rotateX(0deg)
+                    rotateZ(0deg)
+                    translateY(0)
+                    scale(1);
+
+                opacity: 1;
+            }
+
+            65% {
+                transform:
+                    translate(-50%, -50%)
+                    rotateX(0deg)
+                    rotateZ(0deg)
+                    translateY(0)
+                    scale(1);
+
+                opacity: 1;
+            }
+
+            100% {
+                transform:
+                    translate(-160%, -50%)
+                    rotateX(0deg)
+                    rotateZ(0deg)
+                    rotateY(75deg)
+                    scale(0.9);
+
+                opacity: 0;
+            }
+        }
+
+        .memory-cover.rising {
+            animation: bookRise 1.6s cubic-bezier(.22, 1, .36, 1) forwards;
+            pointer-events: none;
+        }
+
+        @keyframes bookRise {
+            0% {
+                opacity: 0;
+                transform:
+                    translate(-50%, -30%)
+                    rotateX(82deg)
+                    rotateZ(-2deg)
+                    translateY(140px)
+                    scale(0.75);
+            }
+
+            100% {
+                opacity: 1;
+                transform:
+                    translate(-50%, -50%)
+                    rotateX(82deg)
+                    rotateZ(-2deg)
+                    translateY(80px)
+                    scale(0.9);
+            }
+        }
+
+        .cover-title {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .cover-title span {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2rem;
+            color: #ec4899;
+        }
+
+        .cover-title strong {
+            font-family: 'Dancing Script', cursive;
+            font-size: 4rem;
+            color: #db2777;
+        }
+
+        .cover-heart {
+            font-size: 3rem;
+            margin-top: 25px;
+        }
+
+        .cover-subtitle {
+            margin-top: 20px;
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.3rem;
+            color: #be185d;
+        }
+
+        .memory-stack.memory-opening .memory-card {
+            transition:
+                transform 0.9s cubic-bezier(.22, 1, .36, 1),
+                opacity 0.9s ease;
+        }
+
+        @media (max-width: 600px) {
+            .memory-stack {
+                height: 470px;
+            }
+
+            .memory-card {
+                width: min(88vw, 420px);
+            }
+
+            .memory-content {
+                padding: 24px 20px 28px;
+            }
+
+            .memory-text {
+                font-family: 'Quicksand', sans-serif;
+                font-size: 1.15rem;
+                line-height: 1.9;
+                color: #db2777;
+
+                opacity: 0;
+            }
+
+            @keyframes textReveal {
+                from {
+                    opacity: 0;
+                    transform: translateY(10px);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+        }
+
         .memory-card {
-            display: none;
+            position: absolute;
+            display: block;
+
+            width: min(90vw, 520px);
+            left: 50%;
+            top: 50%;
+
+            transform: translate(-50%, -50%);
+            transform-origin: left center;
+
             contain: layout paint;
             background: rgba(255, 255, 255, 0.95);
             border-radius: 20px;
             overflow: hidden;
+
             box-shadow:
                 0 15px 35px rgba(80, 20, 40, 0.12),
                 0 5px 15px rgba(80, 20, 40, 0.08);
+
             border: 1px solid rgba(244, 114, 182, 0.15);
 
             opacity: 0;
-            transform: translateX(60px) scale(0.96);
+            pointer-events: none;
+
+            transition:
+                transform 0.8s cubic-bezier(.22, 1, .36, 1),
+                opacity 0.8s ease;
         }
 
         .memory-card.active {
-            display: block;
-            animation: memoryCardEnter 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+            opacity: 1;
+            pointer-events: auto;
+            z-index: 10;
+        }
+
+        .memory-card.show-card {
+            opacity: 1;
+            z-index: 20;
+            transform: translate(-50%, -50%) rotate(0deg) scale(1);
         }
 
         .memory-image {
-            width: 100%;
-            height: 330px;
-            object-fit: cover;
+            width: auto;
+            max-width: 85%;
+            max-height: 360px;
+            height: auto;
+            object-fit: contain;
             display: block;
+            margin: 0 auto;
         }
-
         .memory-content {
             padding: 30px 25px 35px;
+        }
+
+        .memory-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #db2777;
+
+            position: relative;
+            display: inline-block;
+
+            text-shadow:
+                2px 2px 0 #fff,
+                3px 3px 0 rgba(219, 39, 119, 0.15);
+
+            animation: none;
+        }
+
+        .memory-title.cartoon-type {
+            animation: cartoonType 0.8s ease-out forwards;
+        }
+
+        @keyframes cartoonType {
+            0% {
+                opacity: 0;
+                transform: scale(0.85) rotate(-3deg);
+                filter: blur(3px);
+            }
+
+            45% {
+                opacity: 1;
+                transform: scale(1.08) rotate(1deg);
+                filter: blur(0);
+            }
+
+            70% {
+                transform: scale(0.96) rotate(-0.5deg);
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1) rotate(0deg);
+            }
         }
 
         .memory-text {
@@ -84,6 +519,7 @@
             font-size: 1.15rem;
             line-height: 1.9;
             color: #db2777;
+            opacity: 0;
         }
 
         @keyframes memoryCardEnter {
@@ -104,8 +540,13 @@
         }
 
         .memory-card.exit {
-            display: block;
-            animation: memoryCardExit 0.8s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+            opacity: 0;
+            pointer-events: none;
+            transform:
+                translate(calc(-50% - 120px), -50%)
+                rotateY(-25deg)
+                rotateZ(-8deg)
+                scale(0.92);
         }
 
         @keyframes memoryCardExit {
@@ -184,6 +625,13 @@
                 width: 40px;
                 opacity: 0.2;
             }
+        }
+
+        .start-liquid-btn {
+            font-size: 1.5rem;
+            padding: 1rem 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1),
+                        0 2px 4px -1px rgba(0,0,0,0.06);
         }
         
         /* Overlay styles */
@@ -491,13 +939,179 @@
         #appLoader {
             position: fixed;
             inset: 0;
-            background: #fff5f8;
+            z-index: 9999;
+
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
-            z-index: 99999;
-            transition: opacity 0.5s ease;
+
+            background: #fff;
+        }
+
+        .loading-love {
+            position: relative;
+
+            width: 420px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+
+        .loading-car {
+            position: absolute;
+            top: -45px;
+            left: 0;
+            width: 70px;
+            height: 45px;
+            z-index: 5;
+            transition: left .1s linear;
+            animation: carBounce 0.25s ease-in-out infinite alternate;
+        }
+
+        @keyframes carBounce {
+            from {
+                transform: translateY(0);
+            }
+
+            to {
+                transform: translateY(-3px);
+            }
+        }
+
+        .loading-car img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        /* =========================
+        PROGRESS BAR
+        ========================= */
+
+        .loading-bar {
+            position: relative;
+            width: 400px;
+            height: 45px;
+            background: white;
+            padding: 3px;
+            border: 3px solid #5b5154;
+            display: flex;
+            overflow: hidden;
+        }
+
+        #loadingProgress {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                #f9a8d4,
+                #f472b6,
+                #ec4899
+            );
+            transition: width .1s linear;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #loadingProgress::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 60%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.65),
+                transparent
+            );
+            animation: loadingShine 1.2s linear infinite;
+        }
+
+        @keyframes loadingShine {
+            from {
+                left: -100%;
+            }
+
+            to {
+                left: 150%;
+            }
+        }
+
+        #loadingPercent {
+            position: absolute;
+
+            top: 50%;
+            left: 50%;
+
+            transform: translate(-50%, -50%);
+
+            font-family: Arial, sans-serif;
+            font-weight: bold;
+        }
+
+        /* =========================
+        LOADING TEXT
+        ========================= */
+
+        .loading-love-text {
+            margin-top: 10px;
+
+            font-family: Arial, sans-serif;
+
+            font-size: 20px;
+
+            color: #f47679;
+
+            text-transform: uppercase;
+        }
+
+        .loading-love-text span {
+            opacity: 0;
+        }
+
+        .loading-love-text span:nth-child(1) {
+            animation: loadingDot 1s 0.25s linear infinite;
+        }
+
+        .loading-love-text span:nth-child(2) {
+            animation: loadingDot 1s 0.5s linear infinite;
+        }
+
+        .loading-love-text span:nth-child(3) {
+            animation: loadingDot 1s 0.75s linear infinite;
+        }
+
+        .falling-letter {
+            position: fixed;
+            top: -80px;
+            width: 70px;
+            height: 50px;
+            z-index: 10000;
+            cursor: pointer;
+            transition: top 10s linear;
+        }
+
+        .falling-letter img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        @keyframes loadingDot {
+            0% {
+                opacity: 0;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+            }
         }
 
         .cute-loader {
@@ -527,49 +1141,6 @@
             }
         }
 
-        /* LOADING APP */
-        #appLoader {
-            position: fixed;
-            inset: 0;
-            background: #fff5f8;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 99999;
-            opacity: 1;
-            transition: opacity 0.8s ease;
-        }
-
-        #appLoader p {
-            margin-top: 15px;
-            color: #ec4899;
-            font-size: 14px;
-        }
-
-        .loading-bar {
-            width: 220px;
-            height: 8px;
-            background: #fce7f3;
-            border-radius: 999px;
-            overflow: hidden;
-            margin-top: 18px;
-        }
-
-        #loadingProgress {
-            width: 0%;
-            height: 100%;
-            background: #ec4899;
-            border-radius: 999px;
-            transition: width 0.1s linear;
-        }
-
-        #loadingPercent {
-            margin-top: 8px;
-            color: #ec4899;
-            font-size: 13px;
-            font-weight: bold;
-        }
         /* =========================
         LOADING DONE EFFECT
         ========================= */
@@ -1028,50 +1599,6 @@
             display: block;
         }
 
-        /* DECORATION AROUND MEMORY FRAME */
-
-        .memory-result::before {
-            content: "〰〰〰〰〰";
-
-            position: absolute;
-
-            left: 3%;
-            top: 50%;
-
-            transform: translateY(-50%) rotate(-90deg);
-
-            font-size: 55px;
-            letter-spacing: -8px;
-
-            color: #f9a8d4;
-            opacity: 0.45;
-
-            pointer-events: none;
-
-            z-index: 0;
-        }
-
-        .memory-result::after {
-            content: "〰〰〰〰〰";
-
-            position: absolute;
-
-            right: 3%;
-            top: 50%;
-
-            transform: translateY(-50%) rotate(90deg);
-
-            font-size: 55px;
-            letter-spacing: -8px;
-
-            color: #f9a8d4;
-            opacity: 0.45;
-
-            pointer-events: none;
-
-            z-index: 0;
-        }
-
         .memory-saved {
             display: flex;
             align-items: center;
@@ -1223,32 +1750,235 @@
                 opacity: 0.28;
             }
         }
+        /* ===== GLOW TEXT EFFECT ===== */
+
+        .glow-text {
+            animation: neonGlow 1.8s ease-in-out infinite alternate;
+        }
+
+        @keyframes neonGlow {
+            0% {
+                text-shadow:
+                    0 0 4px #fff,
+                    0 0 8px #f472b6,
+                    0 0 15px #ec4899;
+            }
+
+            50% {
+                text-shadow:
+                    0 0 6px #fff,
+                    0 0 15px #f472b6,
+                    0 0 30px #ec4899,
+                    0 0 45px #ec4899;
+            }
+
+            100% {
+                text-shadow:
+                    0 0 8px #fff,
+                    0 0 20px #f472b6,
+                    0 0 40px #ec4899,
+                    0 0 65px #db2777;
+            }
+        }
+
+        @keyframes textGlow {
+            from {
+                text-shadow:
+                    0 0 5px rgba(236, 72, 153, 0.6),
+                    0 0 10px rgba(236, 72, 153, 0.6),
+                    0 0 20px rgba(236, 72, 153, 0.5);
+            }
+
+            to {
+                text-shadow:
+                    0 0 10px rgba(236, 72, 153, 0.9),
+                    0 0 20px rgba(236, 72, 153, 0.9),
+                    0 0 40px rgba(236, 72, 153, 0.8),
+                    0 0 60px rgba(236, 72, 153, 0.7);
+            }
+        }
+
+        /* ===== SPLATOON LIQUID BUTTON ===== */
+
+        .liquid-btn {
+            position: relative;
+            overflow: hidden;
+            border: none;
+            padding: 13px 26px;
+            border-radius: 999px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            isolation: isolate;
+            transform: translateZ(0);
+        }
+
+        .liquid-btn span {
+            position: relative;
+            z-index: 3;
+        }
+
+        .liquid-btn::before {
+            content: "";
+            position: absolute;
+            z-index: 1;
+            width: 180%;
+            height: 180%;
+            left: -40%;
+            top: 100%;
+            border-radius: 45%;
+            transform: rotate(0deg);
+            transition: top 0.7s cubic-bezier(.22,1,.36,1);
+        }
+
+        .liquid-btn::after {
+            content: "";
+            position: absolute;
+            z-index: 2;
+            width: 160%;
+            height: 160%;
+            left: -30%;
+            top: 110%;
+            border-radius: 48%;
+            opacity: 0.45;
+            transition: top 0.9s cubic-bezier(.22,1,.36,1);
+        }
+
+        .liquid-btn:hover::before {
+            top: -35%;
+            animation: liquidWave 2s ease-in-out infinite;
+        }
+
+        .liquid-btn:hover::after {
+            top: -30%;
+            animation: liquidWaveReverse 2.4s ease-in-out infinite;
+        }
+
+        .liquid-btn:active::before {
+            top: -35%;
+            animation: liquidWave 0.8s ease-in-out;
+        }
+
+        .liquid-btn:active::after {
+            top: -30%;
+            animation: liquidWaveReverse 0.9s ease-in-out;
+        }
+
+        .liquid-btn:hover {
+            transform: scale(1.06);
+        }
+
+        .liquid-btn:active {
+            transform: scale(0.96);
+        }
+
+        .liquid-pink {
+            background: #fbcfe8;
+            color: #9d174d;
+        }
+
+        .liquid-pink::before {
+            background: #ec4899;
+        }
+
+        .liquid-pink::after {
+            background: #f472b6;
+        }
+
+        .liquid-gray {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        .liquid-gray::before {
+            background: #6b7280;
+        }
+
+        .liquid-gray::after {
+            background: #9ca3af;
+        }
+
+        @keyframes liquidWave {
+            0%, 100% {
+                transform: rotate(0deg) scale(1);
+                border-radius: 45% 55% 48% 52%;
+            }
+
+            50% {
+                transform: rotate(8deg) scale(1.08);
+                border-radius: 55% 45% 52% 48%;
+            }
+        }
+
+        @keyframes liquidWaveReverse {
+            0%, 100% {
+                transform: rotate(0deg) scale(1);
+                border-radius: 48% 52% 45% 55%;
+            }
+
+            50% {
+                transform: rotate(-7deg) scale(1.1);
+                border-radius: 42% 58% 55% 45%;
+            }
+        }
+
+        @media (max-width: 767px) {
+            .liquid-btn {
+                -webkit-tap-highlight-color: transparent;
+                touch-action: manipulation;
+            }
+
+            .liquid-btn:active {
+                transform: scale(0.94);
+            }
+        }
+
+        /* Animation chuyển sang màn hình Hế Lô Camay */
+        #overlay.show-intro {
+            animation: overlayIntro 5s cubic-bezier(.22, 1, .36, 1) forwards;
+        }
+
+        @keyframes overlayIntro {
+            0% {
+                opacity: 0;
+                transform: scale(1.08) translateY(30px);
+            }
+
+            60% {
+                opacity: 1;
+                transform: scale(1.02) translateY(0);
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col items-center justify-center p-4">
     <div id="appLoader">
-        <div class="cute-loader">
-            <img id="loaderImage" src="pic1.jpg" alt="Loading">
+
+        <div class="loading-love">
+
+            <div class="loading-car">
+                <img src="car.gif" alt="Loading">
+            </div>
+
+            <div class="loading-bar">
+                <div id="loadingProgress"></div>
+                <div id="loadingPercent">0%</div>
+            </div>
+
+            <h2 class="loading-love-text">
+                loading love
+                <span>.</span>
+                <span>.</span>
+                <span>.</span>
+            </h2>
+
         </div>
 
-    <div id="loadingText">
-        <p class="loading-title">Đợi xíu nhé!</p>
-        <p class="loading-subtitle">
-            Mhuy đang chuẩn bị cho điều đặc biệt...
-        </p>
-    </div>
-
-        <div id="doneMessage">
-            <div class="done-icon">✓</div>
-            <p class="done-title">Xin lỗi đã để nàng chờ lâu!</p>
-            <p class="done-subtitle">Goooooooo...</p>
-        </div>
-
-        <div class="loading-bar">
-            <div id="loadingProgress"></div>
-        </div>
-
-        <div id="loadingPercent">0%</div>
     </div>
 
     <!-- Overlay màn hình bắt đầu -->
@@ -1275,15 +2005,15 @@
                 </p>
 
                 <p class="text-pink-400 text-sm italic">
-                    Mhuy có điều muốn nói... 👀
+                    Anh có điều muốn nói... 👀
                 </p>
 
                 <div class="arrow-down">
                     ↓
                 </div>
 
-                <button id="startBtn" class="start-btn">
-                    Bắt đầu ❤️
+                <button id="startBtn" class="liquid-btn liquid-pink start-liquid-btn">
+                    <span>Bắt đầu 😚</span>
                 </button>
 
             </div>
@@ -1309,17 +2039,70 @@
     <!-- Phần chính (ban đầu ẩn) -->
     <div id="mainContent" class="max-w-2xl w-full text-center hidden">
         <!-- Tiêu đề -->
-        <h1 class="dancing-font text-5xl md:text-6xl font-bold text-pink-500 mb-8">Hế Lô Camay!!</h1>
-
+        <h1 class="dancing-font text-5xl md:text-6xl font-bold text-pink-500 mb-8 glow-text">
+            For Camay!!
+        </h1>
         <!-- Phần tâm tư -->
-        <div id="typingSection" class="mb-8">
+        <div id="typingSection" class="mb-8 memory-stack">
+
+            <div class="intro-memory-letter">
+
+                <h2>Dear Phương Anh siu cute! ❤️</h2>
+
+                <p>
+                    Hôm nay là ngày 8/9/2026, cũng đã một khoảng thời gian kể từ ngày đầu tiên mình gặp nhau.
+                </p>
+
+                <p>
+                    Anh làm cái này một phần vì hy vọng tụi mình sẽ còn có thể gặp nhau nhiều lần nữa trong tương lai,
+                    và một phần cũng vì Huy muốn tạo một bất ngờ nhỏ cho Camay.
+                </p>
+
+                <p>
+                    Nếu e có thể đọc được những dòng này thì anh đã rất vui rồi.
+                    Vì chắc chắn lá thư này được gửi đi sau những buổi đi cùng nhau của tụi mình.
+                </p>
+
+                <p>
+                    Thật ra anh cũng không biết sau này tụi mình sẽ có thêm bao nhiêu kỷ niệm nữa,
+                    hay mọi thứ rồi sẽ đi đến đâu.
+                    Nhưng những khoảnh khắc mà tụi mình đã có, Huy vẫn muốn giữ lại một cách thật đặc biệt.
+                </p>
+
+                <p>
+                    Có thể những điều được lưu lại ở đây không phải là những điều gì quá lớn lao,
+                    nhưng đối với Huy, từng khoảnh khắc đó đều rất đáng để nhớ.
+                </p>
+
+                <p class="letter-ending">
+                    Còn những chuyện tụi mình đã cùng trải qua...<br>
+                    thì để Huy kể Camay nghe từng chút một nha. ❤️
+                </p>
+
+                <button id="nextPageBtn" class="next-page-btn">
+                    Tiếp nhé →
+                </button>
+
+            </div>
+
+            <!-- BÌA SÁCH -->
+            <div class="memory-cover">
+                <div class="cover-title">
+                    <span>Moments</span>
+                    <strong>With you</strong>
+                </div>
+
+                <div class="cover-heart">❤️</div>
+
+                <p class="cover-subtitle">A little collection of memories</p>
+            </div>
 
             <!-- CARD 1 -->
             <div class="memory-card active">
-                <img src="pic1.jpg" alt="Kỷ niệm 1" class="memory-image">
+                <img src="tamanhdautien.jpg" alt="Kỷ niệm 1" class="memory-image">
 
                 <div class="memory-content">
-                    <div class="heart text-pink-500 text-3xl mb-4">❤️</div>
+                    <div class="memory-title text-pink-500 text-3xl mb-4">Our First Photo</div>
 
                     <p class="memory-text">
                         Hong biết em có bất ngờ khi anh làm giống như vậy kh he 😁.
@@ -1329,33 +2112,43 @@
 
             <!-- CARD 2 -->
             <div class="memory-card">
-                <img src="pic2.jpg" alt="Kỷ niệm 2" class="memory-image">
+                <img src="quay.jpg" alt="Kỷ niệm 2" class="memory-image">
 
                 <div class="memory-content">
+                    <div class="memory-title text-pink-500 text-3xl mb-4">Moments I Cherish</div>
                     <p class="memory-text">
-                        Hè mà cứ ở nhà miết thôi 😑.
+                        ANH 2 😑.
                     </p>
                 </div>
             </div>
 
             <!-- CARD 3 -->
             <div class="memory-card">
-                <img src="pic3.jpg" alt="Kỷ niệm 3" class="memory-image">
+                <img src="ptb.jpg" alt="Kỷ niệm 3" class="memory-image">
 
                 <div class="memory-content">
+                    <div class="memory-title text-pink-500 text-3xl mb-4">Just Us</div>
                     <p class="memory-text">
-                        Biết khi anh làm cái này là em hết cơ hội được ở nhà rồi đó 🤗.
+                        ANH 3🤗.
                     </p>
                 </div>
             </div>
 
             <!-- CARD 4 -->
             <div class="memory-card">
-                <img src="pic4.jpg" alt="Kỷ niệm 4" class="memory-image">
+                <video
+                    src="Unknown.mp4"
+                    class="memory-image"
+                    autoplay
+                    muted
+                    loop
+                    playsinline>
+                </video>
 
                 <div class="memory-content">
+                    <div class="memory-title text-pink-500 text-3xl mb-4">Chaos With You</div>
                     <p class="memory-text">
-                        Với lại cũng là lúc để mình gặp nhau nà.
+                        ANH 4
                     </p>
                 </div>
             </div>
@@ -1363,11 +2156,10 @@
             <!-- CARD 5 -->
             <div class="memory-card">
                 <div class="memory-content">
-                    <div class="heart text-pink-500 text-3xl mb-4">❤️</div>
+                    <div class="memory-title text-pink-500 text-3xl mb-4">❤️</div>
 
                     <p class="memory-text">
-                        Cũng cóa 1 chút hồi hộp đồ đó nhma có cái tiền đề là trong dis nói nhiều như mấy bà tám vậy nên chắc sẽ đỡ hơn đóa kakakaka.
-                    </p>
+                        ANH 5
                 </div>
             </div>
 
@@ -1385,13 +2177,14 @@
         <!-- Câu h hỏi -->
         <div id="quizSection" class="hidden bg-white rounded-xl shadow-lg p-8 mb-8 transform transition-all duration-500">
             <div class="heart inline-block text-pink-500 text-4xl mb-6">❤️</div>
-            <h2 class="dancing-font text-3xl md:text-4xl text-pink-600 mb-6">Xin phép cho Huy được dẫn Camay đi vòng sài gòn nhá</h2>
+            <h2 class="dancing-font text-3xl md:text-4xl text-pink-600 mb-6">ANH CO THE...</h2>
             <div class="flex justify-center space-x-4">
-                <button id="yesBtn" class="bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 px-6 rounded-full transition-all duration-300 transform hover:scale-105">
-                    Dạ  ❤️
+                <button id="yesBtn" class="liquid-btn liquid-pink">
+                    <span>Dạ ❤️</span>
                 </button>
-                <button id="noBtn" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-3 px-6 rounded-full transition-all duration-300 transform hover:scale-105">
-                    Mơ đi cưng 🤌🏻🧚‍♀️
+
+                <button id="noBtn" class="liquid-btn liquid-gray">
+                    <span>Mơ đi cưng 🤌🏻🧚‍♀️</span>
                 </button>
             </div>
         </div>
@@ -1628,12 +2421,18 @@
             
             // Xử lý sự kiện khi nhấn nút bắt đầu
             startBtn.addEventListener('click', function() {
-                // Ẩn overlay
-                overlay.classList.add('hidden');
-                
-                // Hiện nội dung chính
-                mainContent.classList.remove('hidden');
-                mainContent.classList.add('fade-in');
+            // Dừng animation overlayIntro đang giữ opacity:1, rồi ẩn hẳn overlay
+            overlay.classList.remove('show-intro');
+            overlay.style.animation = 'none';
+            overlay.classList.add('hidden');
+
+            setTimeout(() => {
+                overlay.style.display = 'none';
+            }, 600); // khớp với thời gian transition 0.6s của .overlay
+
+            // Hiện nội dung chính
+            mainContent.classList.remove('hidden');
+            mainContent.classList.add('fade-in');
                 
                 // Hiện nút điều khiển nhạc
                 musicToggle.classList.remove('hidden');
@@ -1738,13 +2537,151 @@
                 const cards = typingSection.querySelectorAll('.memory-card');
 
                 let currentCard = 0;
-                const cardDuration = 4500;
+                let started = false;
 
-                function showNextCard() {
-                    const current = cards[currentCard];
+                // Đặt trạng thái ban đầu: 6 card xếp chồng
+                cards.forEach((card, index) => {
+                    card.classList.remove('active', 'exit');
 
-                    // Card cuối cùng → chuyển sang câu hỏi
-                    if (currentCard === cards.length - 1) {
+                    card.style.opacity = '0';
+
+                    const titleElement = card.querySelector('.memory-title');
+                    const textElement = card.querySelector('.memory-text');
+
+                    if (titleElement) {
+                        titleElement.style.opacity = '0';
+                    }
+
+                    if (textElement) {
+                        textElement.style.opacity = '0';
+                    }
+
+                    const letterEl = document.querySelector('.intro-memory-letter');
+                    if (letterEl) {
+                        letterEl.classList.add('show-letter');
+                    }
+
+                    card.style.pointerEvents = 'none';
+                    card.style.zIndex = String(cards.length - index);
+
+                    const x = index * 8;
+                    const y = index * 6;
+                    const z = -index * 22;
+                    const scale = 1 - index * 0.025;
+                    const rotations = [0, 3, -2, 4, -3, 2];
+
+                    card.style.transform =
+                        `translate(-50%, -50%)
+                        translate3d(${x}px, ${y}px, ${z}px)
+                        rotateX(58deg)
+                        rotateZ(${rotations[index]}deg)
+                        scale(${scale})`;
+            });
+
+                    // Chờ người dùng click vào bộ card
+                    const nextPageBtn = document.getElementById('nextPageBtn');
+
+                    nextPageBtn.addEventListener('click', () => {
+                        nextPageBtn.disabled = true; // tránh bấm nhiều lần khi animation đang chạy
+
+                        const letter = document.querySelector('.intro-memory-letter');
+                        const cover = document.querySelector('.memory-cover');
+
+                        if (letter) {
+                            letter.classList.add('letter-exit');
+                        }
+
+                        if (cover) {
+                            cover.style.zIndex = '100';
+                            cover.classList.add('rising');
+
+                            cover.addEventListener('animationend', function onRise(e) {
+                                if (e.animationName !== 'bookRise') return;
+
+                                cover.removeEventListener('animationend', onRise);
+
+                                cover.classList.remove('rising');
+                                cover.classList.add('open');
+
+                                cover.addEventListener('animationend', function onOpen(e2) {
+                                    if (e2.animationName !== 'bookOpen') return;
+
+                                    cover.removeEventListener('animationend', onOpen);
+
+                                    currentCard = 0;
+                                    playNextCard();
+                                }, { once: true });
+                            }, { once: true });
+                        }
+
+                        setTimeout(() => {
+                            if (letter) {
+                                letter.style.display = 'none';
+                            }
+                        }, 1400); // khớp với thời lượng mới của letterExit
+                    });
+
+                function typeText(card) {
+                    return new Promise(resolve => {
+                        const titleElement = card.querySelector('.memory-title');
+                        const textElement = card.querySelector('.memory-text');
+
+                        const title = titleElement ? titleElement.textContent.trim() : '';
+                        const text = textElement ? textElement.textContent.trim() : '';
+
+                        if (titleElement) {
+                            titleElement.textContent = '';
+                            titleElement.style.opacity = '1';
+
+                            titleElement.classList.remove('cartoon-type');
+
+                            requestAnimationFrame(() => {
+                                titleElement.classList.add('cartoon-type');
+                            });
+                        }
+
+                        if (textElement) {
+                            textElement.textContent = '';
+                            textElement.style.opacity = '1';
+                        }
+
+                        let index = 0;
+
+                        function typeTitle() {
+                            if (!titleElement || index >= title.length) {
+                                index = 0;
+
+                                setTimeout(() => {
+                                    typeBody();
+                                }, 1500);
+
+                                return;
+                            }
+
+                            titleElement.textContent += title[index];
+                            index++;
+
+                            setTimeout(typeTitle, 80);
+                        }
+
+                        function typeBody() {
+                            if (!textElement || index >= text.length) {
+                                resolve();
+                                return;
+                            }
+
+                            textElement.textContent += text[index];
+                            index++;
+
+                            setTimeout(typeBody, 80);
+                        }
+
+                        typeTitle();
+                    });
+                }
+
+                function playNextCard() {
+                    if (currentCard >= cards.length) {
                         setTimeout(() => {
                             typingSection.classList.add('heartfelt-exit');
 
@@ -1755,34 +2692,47 @@
                                 quizSection.classList.remove('hidden');
                                 quizSection.classList.add('question-enter');
                             }, 1000);
-
-                        }, 3500);
+                        }, 1500);
 
                         return;
                     }
 
-                    setTimeout(() => {
-                        current.classList.remove('active');
-                        current.classList.add('exit');
+                    const card = cards[currentCard];
 
-                        setTimeout(() => {
-                            current.classList.remove('exit');
+                    card.style.opacity = '1';
+                    card.style.zIndex = '20';
 
-                            currentCard++;
+                    card.classList.add('show-card');
 
-                            cards[currentCard].classList.add('active');
+                    card.style.transform = '';
 
-                            showNextCard();
-                        }, 800);
+                    requestAnimationFrame(() => {
+                        card.classList.add('active');
 
-                    }, cardDuration);
+                        typeText(card).then(() => {
+
+                            setTimeout(() => {
+
+                                card.classList.remove('active');
+                                card.classList.add('exit');
+
+                                setTimeout(() => {
+
+                                    card.style.opacity = '0';
+                                    card.style.pointerEvents = 'none';
+
+                                    currentCard++;
+
+                                    playNextCard();
+
+                                }, 800);
+
+                            }, 1200);
+
+                        });
+                });
                 }
-
-                cards[0].classList.add('active');
-
-                showNextCard();
             }
-                    
             // Xử lý câu h hỏi
             const quizSection = document.getElementById('quizSection');
             const yesBtn = document.getElementById('yesBtn');
@@ -2249,72 +3199,78 @@
                 }, 500);
             }
 
-            const loaderImage = document.getElementById('loaderImage');
             const loadingProgress = document.getElementById('loadingProgress');
             const loadingPercent = document.getElementById('loadingPercent');
-            const appLoader = document.getElementById('appLoader');
+            const loadingCar = document.querySelector('.loading-car');
 
-            const loaderImages = [
-                'pic1.jpg',
-                'pic2.jpg',
-                'pic3.jpg',
-                'pic4.jpg'
-            ];
-
-            let currentImage = 0;
             let progress = 0;
 
-            // Đổi ảnh liên tục
-            const imageLoop = setInterval(() => {
-                currentImage = (currentImage + 1) % loaderImages.length;
-                loaderImage.src = loaderImages[currentImage];
-            }, 700);
-
-
-            // Loading từ 0 → 100%
             const loading = setInterval(() => {
                 progress++;
 
                 loadingProgress.style.width = progress + '%';
                 loadingPercent.textContent = progress + '%';
+                loadingCar.style.left = `${progress * 3.3}px`;
 
-                // Load xong
-                if (progress >= 100) {
+                if (progress === 100) {
                     clearInterval(loading);
-                    clearInterval(imageLoop);
-
-                    // =========================
-                    // LOADING HOÀN TẤT
-                    // =========================
-
-                    // Đảm bảo đúng 100%
-                    loadingProgress.style.width = '100%';
-                    loadingPercent.textContent = '100%';
-
-                    // Thanh loading phát sáng
-                    loadingProgress.classList.add('loading-complete');
-                    loaderImage.classList.add('loader-complete-image');
-
-                    // Đổi nội dung
-                    setTimeout(() => {
-                        document.getElementById('loadingText').style.display = 'none';
-
-                        document.getElementById('doneMessage').style.display = 'block';
-
-                        // Sau khi hiện "Đã xong" mới chuyển trang
-                        setTimeout(() => {
-                            appLoader.style.transition = 'opacity 1.5s ease';
-                            appLoader.style.opacity = '0';
-
-                            setTimeout(() => {
-                                appLoader.remove();
-                            }, 1500);
-
-                        }, 3000);
-
-                    }, 1000);
+                    startFallingLetters();
                 }
+
             }, 40);
+
+            function startFallingLetters() {
+                const letterInterval = setInterval(() => {
+                    const letter = document.createElement('div');
+
+                    letter.className = 'falling-letter';
+
+                    letter.innerHTML = `
+                        <img src="letters.png" alt="Letter">
+                    `;
+
+                    letter.style.left = Math.random() * 90 + '%';
+
+                    document.body.appendChild(letter);
+
+                    setTimeout(() => {
+                        letter.style.top = '100%';
+                    }, 100);
+
+                    setTimeout(() => {
+                        letter.remove();
+                    }, 10000);
+
+                    letter.addEventListener('click', () => {
+                        clearInterval(letterInterval);
+
+                        letter.style.transform = 'scale(1.4) rotate(10deg)';
+                        letter.style.opacity = '0';
+
+                        setTimeout(() => {
+                            document.querySelectorAll('.falling-letter').forEach(item => {
+                                item.remove();
+                            });
+
+                            const appLoader = document.getElementById('appLoader');
+                            const overlay = document.getElementById('overlay');
+
+                            if (appLoader) {
+                                appLoader.remove();
+                            }
+
+                            if (overlay) {
+                                overlay.classList.remove('hidden');
+                                overlay.style.display = 'flex';
+
+                                requestAnimationFrame(() => {
+                                    overlay.classList.add('show-intro');
+                                });
+                            }
+                        }, 500);
+                    });
+                }, 600);
+            }
         });
     </script>
 </body>
