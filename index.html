@@ -165,6 +165,68 @@
             margin-bottom: 24px;
         }
 
+        .letter-photo-slider {
+            display: inline-block;
+            position: relative;
+            width: 42px;
+            height: 42px;
+            margin-left: 8px;
+            vertical-align: middle;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .letter-photo-slider img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transform: translateX(100%);
+            animation: letterPhotoSlide 15s infinite;
+        }
+
+        .letter-photo-slider img:nth-child(1) { animation-delay: 0s; }
+        .letter-photo-slider img:nth-child(2) { animation-delay: 1.5s; }
+        .letter-photo-slider img:nth-child(3) { animation-delay: 3s; }
+        .letter-photo-slider img:nth-child(4) { animation-delay: 4.5s; }
+        .letter-photo-slider img:nth-child(5) { animation-delay: 6s; }
+        .letter-photo-slider img:nth-child(6) { animation-delay: 7.5s; }
+        .letter-photo-slider img:nth-child(7) { animation-delay: 9s; }
+        .letter-photo-slider img:nth-child(8) { animation-delay: 10.5s; }
+        .letter-photo-slider img:nth-child(9) { animation-delay: 12s; }
+        .letter-photo-slider img:nth-child(10) { animation-delay: 13.5s; }
+
+        @keyframes letterPhotoSlide {
+            0% {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+
+            5%, 10% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+
+            15%, 100% {
+                opacity: 0;
+                transform: translateX(-100%);
+            }
+        }
+
+        @keyframes letterPhotoLoop {
+            0%, 8% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            10%, 100% {
+                opacity: 0;
+                transform: scale(1.08);
+            }
+        }
+
         .intro-memory-letter p {
             font-family: 'Quicksand', sans-serif;
             font-size: 1.05rem;
@@ -422,15 +484,12 @@
 
             width: min(90vw, 520px);
             left: 50%;
-            top: 50%;
-
+            top: calc(50% + 70px);
             transform: translate(-50%, -50%);
             transform-origin: left center;
-
-            contain: layout paint;
             background: rgba(255, 255, 255, 0.95);
             border-radius: 20px;
-            overflow: hidden;
+            overflow: visible;
 
             box-shadow:
                 0 15px 35px rgba(80, 20, 40, 0.12),
@@ -458,15 +517,76 @@
             transform: translate(-50%, -50%) rotate(0deg) scale(1);
         }
 
-        .memory-image {
-            width: auto;
-            max-width: 85%;
-            max-height: 360px;
-            height: auto;
+        /* =========================
+        CARD 5 - MEMORY COLLAGE
+        ========================= */
+
+        .memory-collage-card {
+            overflow: hidden;
+        }
+
+        .memory-collage {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: 8px;
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .memory-collage img {
+            width: 100%;
+            height: 150px;
+            object-fit: contain;
+            border-radius: 12px;
+            opacity: 0;
+            transform: scale(0.7);
+            display: block;
+        }
+
+        /* Chờ JS điều khiển thời điểm xuất hiện */
+        .memory-collage img.show-memory-photo {
+            animation: memoryPhotoAppear 0.2s ease-out forwards;
+        }
+
+        @keyframes memoryPhotoAppear {
+            0% {
+                opacity: 0;
+                transform: scale(0.7);
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .memory-card-images {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            width: 100%;
+            padding: 10px;
+        }
+
+        .memory-card > .memory-image {
+            width: calc(100% - 20px);
+            height: 300px;
+            margin: 10px;
             object-fit: contain;
             display: block;
-            margin: 0 auto;
+            border-radius: 12px;
         }
+
+        .memory-card-images .memory-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            display: block;
+            border-radius: 12px;
+        }
+
         .memory-content {
             padding: 30px 25px 35px;
         }
@@ -519,7 +639,7 @@
             font-size: 1.15rem;
             line-height: 1.9;
             color: #db2777;
-            opacity: 0;
+            opacity: 1;
         }
 
         @keyframes memoryCardEnter {
@@ -2047,36 +2167,50 @@
 
             <div class="intro-memory-letter">
 
-                <h2>Dear Phương Anh siu cute! ❤️</h2>
+                <h2>
+                    Dear Phương Anh siu cute!
+                    <span class="letter-photo-slider">
+                        <img src="camay1.jpg" alt="">
+                        <img src="camay2.jpg" alt="">
+                        <img src="pic1.jpg" alt="">
+                        <img src="pic2.jpg" alt="">
+                        <img src="pic3.jpg" alt="">
+                        <img src="camay3.jpg" alt="">
+                        <img src="camay4.jpg" alt="">
+                        <img src="camay5.jpg" alt="">
+                        <img src="dth.jpg" alt="">
+                        <img src="pic3.jpg" alt="">
+                    </span>
+                </h2>
 
                 <p>
                     Hôm nay là ngày 8/9/2026, cũng đã một khoảng thời gian kể từ ngày đầu tiên mình gặp nhau.
                 </p>
 
                 <p>
-                    Anh làm cái này một phần vì hy vọng tụi mình sẽ còn có thể gặp nhau nhiều lần nữa trong tương lai,
-                    và một phần cũng vì Huy muốn tạo một bất ngờ nhỏ cho Camay.
+                    Anh làm góc nhỏ này vì muốn tạo một bất ngờ nho nhỏ cho em, và cũng là vì anh mong tụi mình sẽ còn vô số lần gặp nhau nữa trong tương lai
+                    và một phần cũng vì anh muốn tạo một bất ngờ nhỏ cho em.
                 </p>
 
                 <p>
-                    Nếu e có thể đọc được những dòng này thì anh đã rất vui rồi.
+                    Nếu em có thể đọc được những dòng này thì anh đã rất vui rồi.
                     Vì chắc chắn lá thư này được gửi đi sau những buổi đi cùng nhau của tụi mình.
                 </p>
 
                 <p>
                     Thật ra anh cũng không biết sau này tụi mình sẽ có thêm bao nhiêu kỷ niệm nữa,
                     hay mọi thứ rồi sẽ đi đến đâu.
-                    Nhưng những khoảnh khắc mà tụi mình đã có, Huy vẫn muốn giữ lại một cách thật đặc biệt.
+                    Nhưng những khoảnh khắc mà tụi mình đã có, anh vẫn muốn giữ lại một cách thật đặc biệt.
                 </p>
 
                 <p>
                     Có thể những điều được lưu lại ở đây không phải là những điều gì quá lớn lao,
-                    nhưng đối với Huy, từng khoảnh khắc đó đều rất đáng để nhớ.
+                    nhưng đối với anh, từng khoảnh khắc đó đều rất đáng để nhớ.
                 </p>
 
                 <p class="letter-ending">
                     Còn những chuyện tụi mình đã cùng trải qua...<br>
-                    thì để Huy kể Camay nghe từng chút một nha. ❤️
+                    thì để anh kể bé nghe từng chút một nha. ❤️
                 </p>
 
                 <button id="nextPageBtn" class="next-page-btn">
@@ -2105,61 +2239,83 @@
                     <div class="memory-title text-pink-500 text-3xl mb-4">Our First Photo</div>
 
                     <p class="memory-text">
-                        Hong biết em có bất ngờ khi anh làm giống như vậy kh he 😁.
+                        Ayda! Đây là tấm ảnh đầu tiên của anh với em nè bé...... 
+                        Em thấy dễ thương khum?..... 
+                        Chứ ngày đầu về anh ngắm ảnh này lâu lắm và phát hiện chúng ta thật sự dresscode 😁.
                     </p>
                 </div>
             </div>
 
             <!-- CARD 2 -->
             <div class="memory-card">
-                <img src="quay.jpg" alt="Kỷ niệm 2" class="memory-image">
+                <div class="memory-card-images">
+                    <video
+                        src="Unknown.mp4"
+                        class="memory-image"
+                        autoplay
+                        muted
+                        loop
+                        playsinline>
+                    </video>
+                    <img src="ptb.jpg" alt="Kỷ niệm 2" class="memory-image">
+                    <img src="ptb2.jpg" alt="Kỷ niệm 2" class="memory-image">
+                </div>
 
                 <div class="memory-content">
                     <div class="memory-title text-pink-500 text-3xl mb-4">Moments I Cherish</div>
                     <p class="memory-text">
-                        ANH 2 😑.
+                        Sau đó anh với em quậy tung chảo ptb.....
+                        Nhìn anh trông đù đù mà em thì lại quá xinh đẹp...
                     </p>
                 </div>
             </div>
 
             <!-- CARD 3 -->
             <div class="memory-card">
-                <img src="ptb.jpg" alt="Kỷ niệm 3" class="memory-image">
+                <img src="doanchat.png" alt="Kỷ niệm 3" class="memory-image">
 
                 <div class="memory-content">
-                    <div class="memory-title text-pink-500 text-3xl mb-4">Just Us</div>
+                    <div class="memory-title text-pink-500 text-3xl mb-4">A Brave Moment</div>
                     <p class="memory-text">
-                        ANH 3🤗.
+                        Tới đây không thể thiếu đoạn tin nhắn đầu tiên hihihi..... 
+                        Cảm ơn vì lúc đó anh đã trút hết can đảm để nhắn cho em...
                     </p>
                 </div>
             </div>
 
             <!-- CARD 4 -->
             <div class="memory-card">
-                <video
-                    src="Unknown.mp4"
-                    class="memory-image"
-                    autoplay
-                    muted
-                    loop
-                    playsinline>
-                </video>
+                <img src="mondo.jpg" alt="Kỷ niệm 2" class="memory-image">
 
                 <div class="memory-content">
-                    <div class="memory-title text-pink-500 text-3xl mb-4">Chaos With You</div>
+                    <div class="memory-title text-pink-500 text-3xl mb-4">Earring & Eyes</div>
                     <p class="memory-text">
-                        ANH 4
+                        Nhìn xem tôi đã được cô ấy trao cho bông tai của cổ này hehe.....
+                        Với lại anh muốn khoe là em có đôi mắt thiệt to thiệt đẹp mlem...
                     </p>
                 </div>
             </div>
 
-            <!-- CARD 5 -->
-            <div class="memory-card">
-                <div class="memory-content">
-                    <div class="memory-title text-pink-500 text-3xl mb-4">❤️</div>
+            <!-- CARD 5 - TỔNG HỢP KỶ NIỆM -->
+            <div class="memory-card memory-collage-card">
+                <div class="memory-collage">
+                    <img src="5.jpg" alt="Kỷ niệm nhỏ 1">
+                    <img src="6.jpg" alt="Kỷ niệm nhỏ 2">
+                    <img src="7.jpg" alt="Kỷ niệm nhỏ 3">
+                    <img src="2.jpg" alt="Kỷ niệm nhỏ 4">
+                    <img src="1.jpg" alt="Kỷ niệm nhỏ 5">
+                    <img src="3.jpg" alt="Kỷ niệm nhỏ 6">
+                    <img src="4.jpg" alt="Kỷ niệm nhỏ 7">
+                    <img src="quay.jpg" alt="Kỷ niệm nhỏ 8">
+                    <img src="8.png" alt="Kỷ niệm nhỏ 9">
+                    <img src="Unknown.jpg" alt="Kỷ niệm nhỏ 10">
+                </div>
 
+                <div class="memory-content">
+                    <div class="memory-title text-pink-500 text-3xl mb-4">Pieces of You & Me</div>
                     <p class="memory-text">
-                        ANH 5
+                        Và nhiều kỉ niệm khác nữa....
+                    </p>
                 </div>
             </div>
 
@@ -2177,7 +2333,7 @@
         <!-- Câu h hỏi -->
         <div id="quizSection" class="hidden bg-white rounded-xl shadow-lg p-8 mb-8 transform transition-all duration-500">
             <div class="heart inline-block text-pink-500 text-4xl mb-6">❤️</div>
-            <h2 class="dancing-font text-3xl md:text-4xl text-pink-600 mb-6">ANH CO THE...</h2>
+            <h2 class="dancing-font text-3xl md:text-4xl text-pink-600 mb-6">ANH CÓ THỂ...</h2>
             <div class="flex justify-center space-x-4">
                 <button id="yesBtn" class="liquid-btn liquid-pink">
                     <span>Dạ ❤️</span>
@@ -2200,11 +2356,11 @@
             </div>
 
             <p id="noTypingText" class="typing-container text-lg md:text-xl text-pink-600 font-quicksand">
-                Huy biết thế nào PAnh cũng tò mò bấm vào đây mà, nên Huy đã rào trước roi hehe 😘
+                Anh biết thế nào PAnh cũng tò mò bấm vào đây mà, nên anh đã rào trước roi hehe 😘
             </p>
 
             <button id="continueBtn" class="hidden mt-4 bg-pink-500 hover:bg-pink-600 text-white font-bold py-2 px-4 rounded-full transition-all duration-300">
-                Quà cho đỡ quê nò hihi ❤️
+                Hình phạt cho sự tò mò này kkkkk ❤️
             </button>
 
         </div>
@@ -2217,11 +2373,11 @@
             </div>
 
             <h2 class="font-dancing text-4xl text-pink-500 mb-5">
-                Mình có một điều cuối cùng muốn nhờ cậu
+                Em đã nhấn nút đó sao! Anh không thể tin đượccccc gjklasjgsakl...
             </h2>
 
             <p class="text-pink-400 text-lg leading-relaxed mb-8">
-                Cậu chụp một tấm ảnh chung với anh nhé ❤️
+                Không thể thiếu được bước chụp hình đúng khum nhỉ hihihi
             </p>
 
             <button
@@ -2247,7 +2403,7 @@
 
                 <div class="kiss-direction">
                     <p class="text-2xl md:text-3xl font-semibold text-gray-700">
-                        💋 Hun anh 10 cái
+                        💋 Hun anh 10 cái và nói yêu anh
                     </p>
 
                     <span class="point-right">👉</span>
@@ -2265,7 +2421,7 @@
                 </button>
 
                 <p class="text-gray-500 text-lg">
-                    Không được trốn đâu nha 😏❤️
+                    Không được trốn đâu nha 😏
                 </p>
 
             </div>
@@ -2709,6 +2865,69 @@
                     requestAnimationFrame(() => {
                         card.classList.add('active');
 
+                        // CARD 5 - TỔNG HỢP KỶ NIỆM
+                        if (card.classList.contains('memory-collage-card')) {
+                            const images = card.querySelectorAll('.memory-collage img');
+                            const title = card.querySelector('.memory-title');
+                            const text = card.querySelector('.memory-text');
+
+                            if (title) {
+                                title.style.opacity = '1';
+                                title.classList.remove('cartoon-type');
+
+                                requestAnimationFrame(() => {
+                                    title.classList.add('cartoon-type');
+                                });
+                            }
+
+                            // Reset
+                            images.forEach(image => {
+                                image.classList.remove('show-memory-photo');
+                            });
+
+                            if (text) {
+                                text.textContent = '';
+                                text.style.opacity = '1';
+                            }
+
+                            // 10 ảnh xuất hiện trong đúng 2 giây
+                            images.forEach((image, index) => {
+                                setTimeout(() => {
+                                    image.classList.add('show-memory-photo');
+                                }, index * 200);
+                            });
+
+                            // Gõ caption trong đúng 2 giây
+                            const caption = 'Và nhiều kỉ niệm khác nữa....';
+                            const typingTime = 2000;
+                            const charDelay = typingTime / caption.length;
+
+                            caption.split('').forEach((char, index) => {
+                                setTimeout(() => {
+                                    if (text) {
+                                        text.textContent += char;
+                                    }
+                                }, index * charDelay);
+                            });
+
+                            // Sau 2 giây + giữ 10 giây → sang card tiếp theo
+                            setTimeout(() => {
+                                card.classList.remove('active');
+                                card.classList.add('exit');
+
+                                setTimeout(() => {
+                                    card.style.opacity = '0';
+                                    card.style.pointerEvents = 'none';
+
+                                    currentCard++;
+                                    playNextCard();
+                                }, 800);
+
+                            }, 12000);
+
+                            return;
+                        }
+
                         typeText(card).then(() => {
 
                             setTimeout(() => {
@@ -2730,7 +2949,7 @@
                             }, 1200);
 
                         });
-                });
+                    });
                 }
             }
             // Xử lý câu h hỏi
